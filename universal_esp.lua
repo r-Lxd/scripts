@@ -73,24 +73,24 @@ local function update_esp(player, esp)
         esp.tracer.Visible = visible;
 
         if visible then
-            local scale_factor = 1 / (position.Z * tan(rad(camera.FieldOfView / 2)) * 2) * 1000;
+            local scale_factor = 1 / (position.Z * tan(rad(camera.FieldOfView * 0.5)) * 2) * 1000;
             local width, height = floor_xy(3 * scale_factor, 5 * scale_factor);
             local x, y = floor_xy(position.X, position.Y);
 
             esp.box.Size = new_vector2(width, height);
-            esp.box.Position = new_vector2(floor_xy(x - width / 2, y - height / 2));
+            esp.box.Position = new_vector2(floor_xy(x - width * 0.5, y - height * 0.5));
             esp.box.Color = player.Team and player.TeamColor.Color or new_color3(1,1,1);
 
             esp.name.Text = player.Name;
             esp.name.Color = player.Team and player.TeamColor.Color or new_color3(1,1,1);
-            esp.name.Position = new_vector2(floor_xy(x, y - height / 2 - esp.name.TextBounds.Y));
+            esp.name.Position = new_vector2(floor_xy(x, y - height * 0.5 - esp.name.TextBounds.Y));
 
             esp.distance.Text = floor(position.Z) .. " studs";
             esp.distance.Color = player.Team and player.TeamColor.Color or new_color3(1,1,1);
-            esp.distance.Position = new_vector2(floor_xy(x, y + height / 2));
+            esp.distance.Position = new_vector2(floor_xy(x, y + height * 0.5));
 
-            esp.tracer.From = new_vector2(viewport_size.X / 2, viewport_size.Y);
-            esp.tracer.To = new_vector2(floor_xy(x, y + height / 2));
+            esp.tracer.From = new_vector2(viewport_size.X * 0.5, viewport_size.Y);
+            esp.tracer.To = new_vector2(floor_xy(x, y + height * 0.5));
             esp.tracer.Color = player.Team and player.TeamColor.Color or new_color3(1,1,1);
         end
     else
