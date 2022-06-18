@@ -8,6 +8,7 @@ local workspace = game:GetService("Workspace");
 -- variables
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
+local viewport_size = camera.ViewportSize;
 local cache = {};
 
 -- locals
@@ -51,10 +52,11 @@ local function create_esp(player)
 end
 
 local function remove_esp(player)
-    if rawget(cache, player) then
+    if cache[player] then
         for _, drawing in next, cache[player] do
             drawing:Remove();
         end
+
         cache[player] = nil;
     end
 end
@@ -87,7 +89,7 @@ local function update_esp(player, esp)
             esp.distance.Color = player.Team and player.TeamColor.Color or new_color3(1,1,1);
             esp.distance.Position = new_vector2(floor_xy(x, y + height / 2));
 
-            esp.tracer.From = new_vector2(camera.ViewportSize.X / 2, camera.ViewportSize.Y);
+            esp.tracer.From = new_vector2(viewport_size.X / 2, viewport_size.Y);
             esp.tracer.To = new_vector2(floor_xy(x, y + height / 2));
             esp.tracer.Color = player.Team and player.TeamColor.Color or new_color3(1,1,1);
         end
