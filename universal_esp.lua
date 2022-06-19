@@ -35,13 +35,13 @@ local function create_esp(player)
 
     esp.name = new_drawing("Text");
     esp.name.Font = Drawing.Fonts.Plex;
-    esp.name.Size = 13;
+    esp.name.Size = 14;
     esp.name.Center = true;
     esp.name.Visible = false;
 
     esp.distance = new_drawing("Text");
     esp.distance.Font = Drawing.Fonts.Plex;
-    esp.distance.Size = 13;
+    esp.distance.Size = 14;
     esp.distance.Center = true;
     esp.distance.Visible = false;
 
