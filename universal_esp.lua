@@ -13,7 +13,6 @@ local cache = {};
 
 -- locals
 local new_vector2 = Vector2.new;
-local new_color3 = Color3.new;
 local new_drawing = Drawing.new;
 local rad = math.rad;
 local tan = math.tan;
