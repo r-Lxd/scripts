@@ -18,6 +18,7 @@ local new_drawing = Drawing.new;
 local rad = math.rad;
 local tan = math.tan;
 local floor = math.floor;
+local next = next;
 
 -- functions
 local function floor_xy(x, y)
