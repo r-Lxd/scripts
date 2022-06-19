@@ -17,7 +17,6 @@ local new_drawing = Drawing.new;
 local rad = math.rad;
 local tan = math.tan;
 local floor = math.floor;
-local next = next;
 
 -- functions
 local function create_esp(player)
@@ -27,6 +26,10 @@ local function create_esp(player)
     esp.box.Thickness = 1;
     esp.box.Filled = false;
     esp.box.Visible = false;
+
+    esp.tracer = new_drawing("Line");
+    esp.tracer.Thickness = 1;
+    esp.tracer.Visible = false;
 
     esp.name = new_drawing("Text");
     esp.name.Font = Drawing.Fonts.Plex;
@@ -39,10 +42,6 @@ local function create_esp(player)
     esp.distance.Size = 14;
     esp.distance.Center = true;
     esp.distance.Visible = false;
-
-    esp.tracer = new_drawing("Line");
-    esp.tracer.Thickness = 1;
-    esp.tracer.Visible = false;
 
     cache[player] = esp;
 end
