@@ -1,5 +1,15 @@
 assert(Drawing, "missing function/library: drawing");
 
+-- locals
+local game = game;
+local next = next;
+local new_vector2 = Vector2.new;
+local new_color3 = Color3.new;
+local new_drawing = Drawing.new;
+local rad = math.rad;
+local tan = math.tan;
+local floor = math.floor;
+
 -- services
 local run_service = game:GetService("RunService");
 local players = game:GetService("Players");
@@ -10,14 +20,6 @@ local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 local viewport_size = camera.ViewportSize;
 local cache = {};
-
--- locals
-local new_vector2 = Vector2.new;
-local new_color3 = Color3.new;
-local new_drawing = Drawing.new;
-local rad = math.rad;
-local tan = math.tan;
-local floor = math.floor;
 
 -- functions
 local function floor_xy(x, y)
