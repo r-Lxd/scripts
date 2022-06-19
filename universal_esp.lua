@@ -6,8 +6,8 @@ local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
 
 -- variables
-local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
+local localplayer = players.LocalPlayer;
 local viewport_size = camera.ViewportSize;
 local cache = {};
 
@@ -21,10 +21,6 @@ local floor = math.floor;
 local next = next;
 
 -- functions
-local function floor_xy(x, y)
-    return floor(x), floor(y);
-end
-
 local function create_esp(player)
     local esp = {};
 
@@ -75,26 +71,25 @@ local function update_esp()
             esp.tracer.Visible = visible;
 
             if visible then
-                local color = player.Team and player.TeamColor.Color or new_color3(1,1,1);
                 local scale_factor = 1 / (position.Z * tan(rad(camera.FieldOfView * 0.5)) * 2) * 1000;
-                local width, height = floor_xy(3 * scale_factor, 5 * scale_factor);
-                local x, y = floor_xy(position.X, position.Y);
+                local width, height = floor(3 * scale_factor), floor(5 * scale_factor);
+                local x, y = floor(position.X), floor(position.Y);
 
                 esp.box.Size = new_vector2(width, height);
-                esp.box.Position = new_vector2(floor_xy(x - width * 0.5, y - height * 0.5));
-                esp.box.Color = color;
+                esp.box.Position = new_vector2(x - width * 0.5, y - height * 0.5);
+                esp.box.Color = player.TeamColor.Color;
 
                 esp.name.Text = player.Name;
-                esp.name.Position = new_vector2(floor_xy(x, y - height * 0.5 - esp.name.TextBounds.Y - 2));
-                esp.name.Color = color;
+                esp.name.Position = new_vector2(x, y - height * 0.5 - esp.name.TextBounds.Y - 2);
+                esp.name.Color = player.TeamColor.Color;
 
                 esp.distance.Text = floor(position.Z) .. " studs";
-                esp.distance.Position = new_vector2(floor_xy(x, y + height * 0.5 + 2));
-                esp.distance.Color = color;
+                esp.distance.Position = new_vector2(x, y + height * 0.5 + 2);
+                esp.distance.Color = player.TeamColor.Color;
 
-                esp.tracer.From = new_vector2(floor_xy(viewport_size.X * 0.5, viewport_size.Y));
-                esp.tracer.To = new_vector2(floor_xy(x, y + height * 0.5));
-                esp.tracer.Color = color;
+                esp.tracer.From = new_vector2(viewport_size.X * 0.5, viewport_size.Y);
+                esp.tracer.To = new_vector2(x, y + height * 0.5);
+                esp.tracer.Color = player.TeamColor.Color;
             end
         else
             esp.box.Visible = false;
