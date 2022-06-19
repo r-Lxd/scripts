@@ -105,12 +105,12 @@ local function update_esp()
 end
 
 -- main
+players.PlayerAdded:Connect(create_esp);
+players.PlayerRemoving:Connect(remove_esp);
+run_service:BindToRenderStep("esp", 1, update_esp);
+
 for _, player in next, players:GetPlayers() do
     if player ~= localplayer then
         create_esp(player);
     end
 end
-
-players.PlayerAdded:Connect(create_esp);
-players.PlayerRemoving:Connect(remove_esp);
-run_service:BindToRenderStep("esp", 1, update_esp);
