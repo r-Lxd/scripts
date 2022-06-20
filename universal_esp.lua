@@ -74,19 +74,19 @@ local function update_esp()
                 local x, y = floor(position.X), floor(position.Y);
 
                 esp.box.Size = new_vector2(width, height);
-                esp.box.Position = new_vector2(x - width * 0.5, y - height * 0.5);
+                esp.box.Position = new_vector2(floor(x - width * 0.5), floor(y - height * 0.5));
                 esp.box.Color = player.TeamColor.Color;
 
                 esp.name.Text = player.Name;
-                esp.name.Position = new_vector2(x, y - height * 0.5 - esp.name.TextBounds.Y - 2);
+                esp.name.Position = new_vector2(x, floor(y - height * 0.5 - esp.name.TextBounds.Y - 2));
                 esp.name.Color = player.TeamColor.Color;
 
                 esp.distance.Text = floor(position.Z) .. " studs";
-                esp.distance.Position = new_vector2(x, y + height * 0.5 + 2);
+                esp.distance.Position = new_vector2(x, floor(y + height * 0.5 + 2));
                 esp.distance.Color = player.TeamColor.Color;
 
-                esp.tracer.From = new_vector2(viewport_size.X * 0.5, viewport_size.Y);
-                esp.tracer.To = new_vector2(x, y + height * 0.5);
+                esp.tracer.From = new_vector2(floor(viewport_size.X * 0.5), floor(viewport_size.Y));
+                esp.tracer.To = new_vector2(x, floor(y + height * 0.5));
                 esp.tracer.Color = player.TeamColor.Color;
             end
         else
