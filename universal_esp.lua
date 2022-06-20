@@ -11,6 +11,7 @@ local camera = workspace.CurrentCamera;
 local viewport_size = camera.ViewportSize;
 local wtvp = camera.WorldToViewportPoint;
 local localplayer = players.LocalPlayer;
+local cache = {};
 
 -- locals
 local new_drawing = Drawing.new;
@@ -18,7 +19,6 @@ local new_vector2 = Vector2.new;
 local rad = math.rad;
 local tan = math.tan;
 local floor = math.floor;
-local cache = {};
 
 -- functions
 local function create_esp(player)
