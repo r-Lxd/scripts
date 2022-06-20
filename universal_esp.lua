@@ -24,7 +24,6 @@ local function create_esp(player)
 
     esp.box = new_drawing("Square");
     esp.box.Thickness = 1;
-    esp.box.Filled = false;
     esp.box.Visible = false;
 
     esp.tracer = new_drawing("Line");
@@ -59,8 +58,8 @@ end
 local function update_esp()
     for player, esp in next, cache do
         local character = player and player.Character;
-        if character and character.PrimaryPart then
-            local cframe = character.GetPrimaryPartCFrame(character);
+        if character then
+            local cframe = character.GetPivot(character);
             local position, visible = camera.WorldToViewportPoint(camera, cframe.Position);
 
             esp.box.Visible = visible;
