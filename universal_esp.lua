@@ -6,17 +6,19 @@ local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
 
 -- variables
+local get_pivot = workspace.GetPivot;
 local camera = workspace.CurrentCamera;
-local localplayer = players.LocalPlayer;
 local viewport_size = camera.ViewportSize;
-local cache = {};
+local wtvp = camera.WorldToViewportPoint;
+local localplayer = players.LocalPlayer;
 
 -- locals
-local new_vector2 = Vector2.new;
 local new_drawing = Drawing.new;
+local new_vector2 = Vector2.new;
 local rad = math.rad;
 local tan = math.tan;
 local floor = math.floor;
+local cache = {};
 
 -- functions
 local function create_esp(player)
@@ -59,8 +61,8 @@ local function update_esp()
     for player, esp in next, cache do
         local character = player and player.Character;
         if character then
-            local cframe = character.GetPivot(character);
-            local position, visible = camera.WorldToViewportPoint(camera, cframe.Position);
+            local cframe = get_pivot(character);
+            local position, visible = wtvp(camera, cframe.Position);
 
             esp.box.Visible = visible;
             esp.name.Visible = visible;
