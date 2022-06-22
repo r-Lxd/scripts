@@ -99,7 +99,7 @@ local function update_esp()
     end
 end
 
--- main
+-- initialize
 players.PlayerAdded:Connect(create_esp);
 players.PlayerRemoving:Connect(remove_esp);
 run_service:BindToRenderStep("esp", 1, update_esp);
