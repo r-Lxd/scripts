@@ -6,10 +6,10 @@ local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
 
 -- variables
-local get_pivot = workspace.GetPivot;
 local camera = workspace.CurrentCamera;
-local viewport_size = camera.ViewportSize;
+local get_pivot = workspace.GetPivot;
 local wtvp = camera.WorldToViewportPoint;
+local viewport_size = camera.ViewportSize;
 local localplayer = players.LocalPlayer;
 local cache = {};
 
