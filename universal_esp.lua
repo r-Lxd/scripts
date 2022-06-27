@@ -16,6 +16,7 @@ local cache = {};
 -- locals
 local new_drawing = Drawing.new;
 local new_vector2 = Vector2.new;
+local new_color3 = Color3.new;
 local rad = math.rad;
 local tan = math.tan;
 local floor = math.floor;
@@ -25,20 +26,24 @@ local function create_esp(player)
     local esp = {};
 
     esp.box = new_drawing("Square");
+    esp.box.Color = new_color3(1,1,1);
     esp.box.Thickness = 1;
     esp.box.Visible = false;
 
     esp.tracer = new_drawing("Line");
+    esp.tracer.Color = new_color3(1,1,1);
     esp.tracer.Thickness = 1;
     esp.tracer.Visible = false;
 
     esp.name = new_drawing("Text");
+    esp.name.Color = new_color3(1,1,1);
     esp.name.Font = Drawing.Fonts.Plex;
     esp.name.Size = 14;
     esp.name.Center = true;
     esp.name.Visible = false;
 
     esp.distance = new_drawing("Text");
+    esp.distance.Color = new_color3(1,1,1);
     esp.distance.Font = Drawing.Fonts.Plex;
     esp.distance.Size = 14;
     esp.distance.Center = true;
@@ -60,7 +65,7 @@ end
 local function update_esp()
     for player, esp in next, cache do
         local character = player and player.Character;
-        if character then
+        if character and player.Team ~= localplayer.Team then
             local cframe = get_pivot(character);
             local position, visible = wtvp(camera, cframe.Position);
 
@@ -76,19 +81,15 @@ local function update_esp()
 
                 esp.box.Size = new_vector2(width, height);
                 esp.box.Position = new_vector2(floor(x - width * 0.5), floor(y - height * 0.5));
-                esp.box.Color = player.TeamColor.Color;
 
                 esp.tracer.From = new_vector2(floor(viewport_size.X * 0.5), floor(viewport_size.Y));
                 esp.tracer.To = new_vector2(x, floor(y + height * 0.5));
-                esp.tracer.Color = player.TeamColor.Color;
 
                 esp.name.Text = player.Name;
                 esp.name.Position = new_vector2(x, floor(y - height * 0.5 - esp.name.TextBounds.Y) - 2);
-                esp.name.Color = player.TeamColor.Color;
 
                 esp.distance.Text = floor(position.Z) .. " studs";
                 esp.distance.Position = new_vector2(x, floor(y + height * 0.5) + 2);
-                esp.distance.Color = player.TeamColor.Color;
             end
         else
             esp.box.Visible = false;
