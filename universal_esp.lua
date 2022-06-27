@@ -26,24 +26,24 @@ local function create_esp(player)
     local esp = {};
 
     esp.box = new_drawing("Square");
-    esp.box.Color = new_color3(1,1,1);
+    esp.box.Color = new_color3(1, 1, 1);
     esp.box.Thickness = 1;
     esp.box.Visible = false;
 
     esp.tracer = new_drawing("Line");
-    esp.tracer.Color = new_color3(1,1,1);
+    esp.tracer.Color = new_color3(1, 1, 1);
     esp.tracer.Thickness = 1;
     esp.tracer.Visible = false;
 
     esp.name = new_drawing("Text");
-    esp.name.Color = new_color3(1,1,1);
+    esp.name.Color = new_color3(1, 1, 1);
     esp.name.Font = Drawing.Fonts.Plex;
     esp.name.Size = 14;
     esp.name.Center = true;
     esp.name.Visible = false;
 
     esp.distance = new_drawing("Text");
-    esp.distance.Color = new_color3(1,1,1);
+    esp.distance.Color = new_color3(1, 1, 1);
     esp.distance.Font = Drawing.Fonts.Plex;
     esp.distance.Size = 14;
     esp.distance.Center = true;
