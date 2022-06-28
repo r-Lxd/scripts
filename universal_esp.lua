@@ -54,13 +54,11 @@ local function create_esp(player)
 end
 
 local function remove_esp(player)
-    if cache[player] then
-        for _, drawing in next, cache[player] do
-            drawing:Remove();
-        end
-
-        cache[player] = nil;
+    for _, drawing in next, cache[player] do
+        drawing:Remove();
     end
+
+    cache[player] = nil;
 end
 
 local function update_esp()
@@ -104,7 +102,7 @@ end
 -- initialize
 players.PlayerAdded:Connect(create_esp);
 players.PlayerRemoving:Connect(remove_esp);
-run_service:BindToRenderStep("esp", 1, update_esp);
+run_service.RenderStepped:Connect(update_esp);
 
 for _, player in next, players:GetPlayers() do
     if player ~= localplayer then
