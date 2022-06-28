@@ -6,10 +6,10 @@ local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
 
 -- variables
-local get_pivot = workspace.GetPivot;
 local camera = workspace.CurrentCamera;
-local viewport_size = camera.ViewportSize;
+local get_pivot = workspace.GetPivot;
 local wtvp = camera.WorldToViewportPoint;
+local viewport_size = camera.ViewportSize;
 local localplayer = players.LocalPlayer;
 local cache = {};
 
@@ -64,7 +64,7 @@ end
 local function update_esp()
     for player, esp in next, cache do
         local character = player and player.Character;
-        if character and player.Team ~= localplayer.Team then
+        if character and player.TeamColor ~= localplayer.TeamColor then
             local cframe = get_pivot(character);
             local position, visible = wtvp(camera, cframe.Position);
 
