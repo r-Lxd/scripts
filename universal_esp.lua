@@ -64,7 +64,7 @@ end
 local function update_esp()
     for player, esp in next, cache do
         local character = player and player.Character;
-        if character and player.TeamColor ~= localplayer.TeamColor then
+        if character and player.Team ~= localplayer.Team then
             local cframe = get_pivot(character);
             local position, visible = wtvp(camera, cframe.Position);
 
