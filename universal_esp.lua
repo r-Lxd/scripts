@@ -37,7 +37,6 @@ local function create_esp(player)
 
     esp.name = new_drawing("Text");
     esp.name.Color = new_color3(1, 1, 1);
-    esp.name.Text = player.Name;
     esp.name.Font = Drawing.Fonts.Plex;
     esp.name.Size = 14;
     esp.name.Center = true;
