@@ -35,13 +35,6 @@ local function create_esp(player)
     esp.tracer.Thickness = 1;
     esp.tracer.Visible = false;
 
-    esp.distance = new_drawing("Text");
-    esp.distance.Color = new_color3(1, 1, 1);
-    esp.distance.Font = Drawing.Fonts.Plex;
-    esp.distance.Size = 14;
-    esp.distance.Center = true;
-    esp.distance.Visible = false;
-    
     esp.name = new_drawing("Text");
     esp.name.Color = new_color3(1, 1, 1);
     esp.name.Text = player.Name;
@@ -49,6 +42,13 @@ local function create_esp(player)
     esp.name.Size = 14;
     esp.name.Center = true;
     esp.name.Visible = false;
+
+    esp.distance = new_drawing("Text");
+    esp.distance.Color = new_color3(1, 1, 1);
+    esp.distance.Font = Drawing.Fonts.Plex;
+    esp.distance.Size = 14;
+    esp.distance.Center = true;
+    esp.distance.Visible = false;
 
     cache[player] = esp;
 end
@@ -70,8 +70,8 @@ local function update_esp()
 
             esp.box.Visible = visible;
             esp.tracer.Visible = visible;
-            esp.distance.Visible = visible;
             esp.name.Visible = visible;
+            esp.distance.Visible = visible;
 
             if visible then
                 local scale_factor = 1 / (position.Z * tan(rad(camera.FieldOfView * 0.5)) * 2) * 100;
@@ -83,17 +83,18 @@ local function update_esp()
 
                 esp.tracer.From = new_vector2(floor(viewport_size.X * 0.5), floor(viewport_size.Y));
                 esp.tracer.To = new_vector2(x, floor(y + height * 0.5));
-                
+
+                esp.name.Text = player.Name;
+                esp.name.Position = new_vector2(x, floor(y - height * 0.5 - esp.name.TextBounds.Y) - 2);
+
                 esp.distance.Text = floor(position.Z) .. " studs";
                 esp.distance.Position = new_vector2(x, floor(y + height * 0.5) + 2);
-
-                esp.name.Position = new_vector2(x, floor(y - height * 0.5 - esp.name.TextBounds.Y) - 2);
             end
         else
             esp.box.Visible = false;
             esp.tracer.Visible = false;
-            esp.distance.Visible = false;
             esp.name.Visible = false;
+            esp.distance.Visible = false;
         end
     end
 end
