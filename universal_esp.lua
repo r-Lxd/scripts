@@ -20,7 +20,6 @@ local new_color3 = Color3.new;
 local rad = math.rad;
 local tan = math.tan;
 local floor = math.floor;
-local lower = string.lower;
 
 -- functions
 local function create_esp(player)
@@ -37,6 +36,7 @@ local function create_esp(player)
     esp.tracer.Visible = false;
 
     esp.name = new_drawing("Text");
+    esp.name.Text = player.Name;
     esp.name.Color = new_color3(1, 1, 1);
     esp.name.Font = Drawing.Fonts.Plex;
     esp.name.Size = 14;
@@ -84,7 +84,6 @@ local function update_esp()
                 esp.tracer.From = new_vector2(floor(viewport_size.X * 0.5), floor(viewport_size.Y));
                 esp.tracer.To = new_vector2(x, floor(y + height * 0.5));
 
-                esp.name.Text = lower(player.Name);
                 esp.name.Position = new_vector2(x, floor(y - height * 0.5 - esp.name.TextBounds.Y) - 2);
 
                 esp.distance.Text = floor(position.Z) .. " studs";
