@@ -84,10 +84,10 @@ local function update_esp()
                 esp.tracer.To = new_vector2(x, floor(y + height * 0.5));
 
                 esp.name.Text = player.Name;
-                esp.name.Position = new_vector2(x, floor(y - height * 0.5 - esp.name.TextBounds.Y) - 2);
+                esp.name.Position = new_vector2(x, floor(y - height * 0.5 - esp.name.TextBounds.Y));
 
                 esp.distance.Text = floor(position.Z) .. " studs";
-                esp.distance.Position = new_vector2(x, floor(y + height * 0.5) + 2);
+                esp.distance.Position = new_vector2(x, floor(y + height * 0.5));
             end
         else
             esp.box.Visible = false;
