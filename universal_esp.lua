@@ -98,7 +98,7 @@ local function update_esp()
     end
 end
 
--- initialize
+-- connections
 players.PlayerAdded:Connect(create_esp);
 players.PlayerRemoving:Connect(remove_esp);
 run_service.RenderStepped:Connect(update_esp);
