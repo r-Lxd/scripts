@@ -1,4 +1,4 @@
-assert(Drawing, "missing function/library: drawing");
+assert(Drawing, "missing dependency: drawing");
 
 -- services
 local run_service = game:GetService("RunService");
