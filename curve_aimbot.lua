@@ -36,7 +36,7 @@ end
 
 local function bezier_curve(t, p0, p2)
     local p1 = p0 + (p2 - p0) * Vector2.new(0, 1);
-	return (1 - t)^2 * p0 + 2*(1 - t) * t * p1 + t^2 * p2;
+    return (1 - t)^2 * p0 + 2*(1 - t) * t * p1 + t^2 * p2;
 end
 
 -- connections
