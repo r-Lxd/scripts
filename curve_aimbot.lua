@@ -11,7 +11,7 @@ local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
 local localplayer = players.LocalPlayer;
 local mouse_pos = inputservice.GetMouseLocation;
-local mouse_downs = inputservice.GetMouseButtonsPressed;
+local is_mouse_pressed = inputservice.IsMouseButtonPressed;
 local curve = { player = nil, i = 0 };
 
 -- functions
@@ -34,22 +34,13 @@ local function get_closest()
     return player, position;
 end
 
-local function is_mouse_down(input_type)
-    for _, input in next, mouse_downs(inputservice) do
-        if input.UserInputType == input_type then
-            return true;
-        end
-    end
-    return false;
-end
-
 local function quad_bezier(t, p0, p1, o0)
     return (1 - t)^2 * p0 + 2 * (1 - t) * t * (p0 + (p1 - p0) * o0) + t^2 * p1;
 end
 
 -- connections
 runservice.Heartbeat:Connect(function(delta_time)
-    if is_mouse_down(Enum.UserInputType.MouseButton2) then
+    if is_mouse_pressed(inputservice, Enum.UserInputType.MouseButton2) then
         local player, screen = get_closest();
         if player and player.Character then
             if curve.player ~= player or curve.i > 1 then
