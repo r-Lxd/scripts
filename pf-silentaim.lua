@@ -8,13 +8,15 @@ local replicatedfirst = game:GetService("ReplicatedFirst");
 
 -- variables
 local camera = workspace.CurrentCamera;
+local wtvp = camera.WorldToViewportPoint;
+local mouse_pos = inputservice.GetMouseLocation;
 local localplayer = players.LocalPlayer;
 local ticket = 0;
 
 -- modules
 local modules = {};
-modules.values = require(replicatedfirst.SharedModules.SharedConfigs.PublicSettings);
 modules.network = require(replicatedfirst.ClientModules.Old.framework.network);
+modules.values = require(replicatedfirst.SharedModules.SharedConfigs.PublicSettings);
 modules.physics = require(replicatedfirst.SharedModules.Old.Utilities.Math.physics:Clone());
 
 for _, v in next, getgc(true) do
@@ -33,10 +35,10 @@ local function get_closest()
     for _, p in next, players:GetPlayers() do
         local character = modules.replication.getbodyparts(p);
         if character and p.Team ~= localplayer.Team then
-            local pos, visible = camera:WorldToViewportPoint(character.head.Position);
+            local pos, visible = wtvp(camera, character.head.Position);
             pos = Vector2.new(pos.X, pos.Y);
 
-            local magnitude = (pos - inputservice:GetMouseLocation()).Magnitude;
+            local magnitude = (pos - mouse_pos(inputservice)).Magnitude;
             if magnitude < closest and visible then
                 closest = magnitude;
                 player = p;
