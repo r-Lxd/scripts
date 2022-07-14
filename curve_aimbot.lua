@@ -1,18 +1,21 @@
 assert(mousemoverel, "missing dependency: mousemoverel");
 
 -- services
+local input_service = game:GetService("UserInputService");
+local run_service = game:GetService("RunService");
 local players = game:GetService("Players");
-local inputservice = game:GetService("UserInputService");
-local runservice = game:GetService("RunService");
 local workspace = game:GetService("Workspace");
 
 -- variables
 local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
 local localplayer = players.LocalPlayer;
-local mouse_pos = inputservice.GetMouseLocation;
-local is_pressed = inputservice.IsMouseButtonPressed;
+local mouse_pos = input_service.GetMouseLocation;
+local is_pressed = input_service.IsMouseButtonPressed;
 local curve = { player = nil, i = 0 };
+
+-- locals
+local new_vector2 = Vector2.new;
 
 -- functions
 local function get_closest()
@@ -21,9 +24,9 @@ local function get_closest()
         local character = p.Character;
         if character and p.Team ~= localplayer.Team then
             local pos, visible = wtvp(camera, character.Head.Position);
-            pos = Vector2.new(pos.X, pos.Y);
+            pos = new_vector2(pos.X, pos.Y);
 
-            local magnitude = (pos - mouse_pos(inputservice)).Magnitude;
+            local magnitude = (pos - mouse_pos(input_service)).Magnitude;
             if magnitude < closest and visible then
                 closest = magnitude;
                 player = p;
@@ -39,8 +42,8 @@ local function quad_bezier(t, p0, p1, o0)
 end
 
 -- connections
-runservice.Heartbeat:Connect(function(delta_time)
-    if is_pressed(inputservice, Enum.UserInputType.MouseButton2) then
+run_service.Heartbeat:Connect(function(delta_time)
+    if is_pressed(input_service, Enum.UserInputType.MouseButton2) then
         local player, screen = get_closest();
         if player and player.Character then
             if curve.player ~= player or curve.i > 1 then
@@ -48,8 +51,8 @@ runservice.Heartbeat:Connect(function(delta_time)
                 curve.i = 0;
             end
 
-            local mouse = mouse_pos(inputservice);
-            local delta = quad_bezier(curve.i, mouse, screen, Vector2.new(0.5, 0)) - mouse;
+            local mouse = mouse_pos(input_service);
+            local delta = quad_bezier(curve.i, mouse, screen, new_vector2(0.5, 0)) - mouse;
             mousemoverel(delta.X, delta.Y);
 
             curve.i += delta_time * 1.5;
