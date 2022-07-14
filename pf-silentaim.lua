@@ -2,22 +2,25 @@ assert(getgc, "missing dependency: getgc");
 
 -- services
 local players = game:GetService("Players");
-local inputservice = game:GetService("UserInputService");
 local workspace = game:GetService("Workspace");
-local replicatedfirst = game:GetService("ReplicatedFirst");
+local input_service = game:GetService("UserInputService");
+local replicated_first = game:GetService("ReplicatedFirst");
 
 -- variables
 local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
-local mouse_pos = inputservice.GetMouseLocation;
+local mouse_pos = input_service.GetMouseLocation;
 local localplayer = players.LocalPlayer;
 local ticket = 0;
 
+-- locals
+local new_vector2 = Vector2.new;
+
 -- modules
 local modules = {};
-modules.network = require(replicatedfirst.ClientModules.Old.framework.network);
-modules.values = require(replicatedfirst.SharedModules.SharedConfigs.PublicSettings);
-modules.physics = require(replicatedfirst.SharedModules.Old.Utilities.Math.physics:Clone());
+modules.network = require(replicated_first.ClientModules.Old.framework.network);
+modules.values = require(replicated_first.SharedModules.SharedConfigs.PublicSettings);
+modules.physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone());
 
 for _, v in next, getgc(true) do
     if type(v) == "table" then
@@ -36,9 +39,9 @@ local function get_closest()
         local character = modules.replication.getbodyparts(p);
         if character and p.Team ~= localplayer.Team then
             local pos, visible = wtvp(camera, character.head.Position);
-            pos = Vector2.new(pos.X, pos.Y);
+            pos = new_vector2(pos.X, pos.Y);
 
-            local magnitude = (pos - mouse_pos(inputservice)).Magnitude;
+            local magnitude = (pos - mouse_pos(input_service)).Magnitude;
             if magnitude < closest and visible then
                 closest = magnitude;
                 player = p;
