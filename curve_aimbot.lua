@@ -48,7 +48,7 @@ local function quad_bezier(t, p0, p1, o0)
 end
 
 -- connections
-runservice.Heartbeat:Connect(function()
+runservice.Heartbeat:Connect(function(delta_time)
     if is_mouse_down(Enum.UserInputType.MouseButton2) then
         local player, screen = get_closest();
         if player and player.Character then
@@ -61,7 +61,7 @@ runservice.Heartbeat:Connect(function()
             local delta = quad_bezier(curve.i, mouse, screen, Vector2.new(0.5, 0)) - mouse;
             mousemoverel(delta.X, delta.Y);
 
-            curve.i += 0.025;
+            curve.i += delta_time * 1.5;
         end
     else
         curve.player = nil;
