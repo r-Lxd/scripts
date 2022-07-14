@@ -34,9 +34,9 @@ local function get_closest()
     return player, position;
 end
 
-local function bezier_curve(t, p0, p2)
-    local p1 = p0 + (p2 - p0) * Vector2.new(0, 1);
-    return (1 - t)^2 * p0 + 2*(1 - t) * t * p1 + t^2 * p2;
+local function quad_bezier(t, p0, p1)
+    local o0 = p0 + (p1 - p0) * Vector2.new(0.5, 0);
+    return (1 - t)^2 * p0 + 2 * (1 - t) * t * o0 + t^2 * p1;
 end
 
 -- connections
@@ -61,7 +61,7 @@ runservice.Heartbeat:Connect(function()
             end
 
             local mouse = mouse_pos(inputservice);
-            local delta = bezier_curve(curve.i, mouse, screen) - mouse;
+            local delta = quad_bezier(curve.i, mouse, screen) - mouse;
             mousemoverel(delta.X, delta.Y);
 
             curve.i += 0.025;
