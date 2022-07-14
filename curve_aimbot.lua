@@ -11,7 +11,7 @@ local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
 local localplayer = players.LocalPlayer;
 local mouse_pos = inputservice.GetMouseLocation;
-local is_mouse_pressed = inputservice.IsMouseButtonPressed;
+local is_pressed = inputservice.IsMouseButtonPressed;
 local curve = { player = nil, i = 0 };
 
 -- functions
@@ -40,7 +40,7 @@ end
 
 -- connections
 runservice.Heartbeat:Connect(function(delta_time)
-    if is_mouse_pressed(inputservice, Enum.UserInputType.MouseButton2) then
+    if is_pressed(inputservice, Enum.UserInputType.MouseButton2) then
         local player, screen = get_closest();
         if player and player.Character then
             if curve.player ~= player or curve.i > 1 then
