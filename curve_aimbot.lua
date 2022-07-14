@@ -43,6 +43,7 @@ local function is_mouse_down(input_type)
     return false;
 end
 
+-- o1 = position of the second point, ranged between 0 and 1
 local function quad_bezier(t, p0, p1, o0)
     return (1 - t)^2 * p0 + 2 * (1 - t) * t * (p0 + (p1 - p0) * o0) + t^2 * p1;
 end
