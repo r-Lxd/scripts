@@ -37,13 +37,15 @@ local function get_closest()
     return player, position;
 end
 
-local function quad_bezier(t, p0, p1, o0)
-    return (1 - t)^2 * p0 + 2 * (1 - t) * t * (p0 + (p1 - p0) * o0) + t^2 * p1;
+local function cubic_bezier(t, p0, p3, o0, o1)
+    local p1, p2 = p0 + (p3 - p0) * o0, p0 + (p3 - p0) * o1;
+    return (1 - t)^3*p0 + 3*(1 - t)^2*t*p1 + 3*(1 - t)*t^2*p2 + t^3*p3;
 end
 
 -- connections
 run_service.Heartbeat:Connect(function(delta_time)
-    if is_pressed(input_service, Enum.UserInputType.MouseButton2) then
+    -- is_pressed(input_service, Enum.UserInputType.MouseButton2)
+    if input_service:IsKeyDown(Enum.KeyCode.LeftAlt) then
         local player, screen = get_closest();
         if player and player.Character then
             if curve.player ~= player or curve.i > 1 then
@@ -52,7 +54,7 @@ run_service.Heartbeat:Connect(function(delta_time)
             end
 
             local mouse = mouse_pos(input_service);
-            local delta = quad_bezier(curve.i, mouse, screen, new_vector2(0.5, 0)) - mouse;
+            local delta = cubic_bezier(curve.i, mouse, screen, new_vector2(0.5, 0), new_vector2(1, 0.5)) - mouse;
             mousemoverel(delta.X, delta.Y);
 
             curve.i += delta_time * 1.5;
