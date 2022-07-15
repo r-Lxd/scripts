@@ -44,8 +44,7 @@ end
 
 -- connections
 run_service.Heartbeat:Connect(function(delta_time)
-    -- is_pressed(input_service, Enum.UserInputType.MouseButton2)
-    if input_service:IsKeyDown(Enum.KeyCode.LeftAlt) then
+    if is_pressed(input_service, Enum.UserInputType.MouseButton2) then
         local player, screen = get_closest();
         if player and player.Character then
             if curve.player ~= player or curve.i > 1 then
