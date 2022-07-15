@@ -5,6 +5,7 @@ local input_service = game:GetService("UserInputService");
 local run_service = game:GetService("RunService");
 local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
+local teams = game:GetService("Teams");
 
 -- variables
 local camera = workspace.CurrentCamera;
@@ -22,7 +23,7 @@ local function get_closest()
     local closest, player, position = math.huge, nil, nil;
     for _, p in next, players:GetPlayers() do
         local character = p.Character;
-        if character and p.Team ~= localplayer.Team then
+        if character then
             local pos, visible = wtvp(camera, character.Head.Position);
             pos = new_vector2(pos.X, pos.Y);
 
@@ -46,7 +47,7 @@ end
 run_service.Heartbeat:Connect(function(delta_time)
     if is_pressed(input_service, Enum.UserInputType.MouseButton2) then
         local player, screen = get_closest();
-        if player and player.Character then
+        if player and (player.Team ~= localplayer.Team or #teams:GetTeams() <= 1) then
             if curve.player ~= player or curve.i > 1 then
                 curve.player = player;
                 curve.i = 0;
