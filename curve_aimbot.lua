@@ -22,7 +22,7 @@ local function get_closest()
     local closest, player, position = math.huge, nil, nil;
     for _, p in next, players:GetPlayers() do
         local character = p.Character;
-        if character and p.Team ~= p.Team then
+        if character and p.Team ~= localplayer.Team then
             local pos, visible = wtvp(camera, character.Head.Position);
             pos = new_vector2(pos.X, pos.Y);
 
