@@ -52,7 +52,7 @@ local function get_closest()
 end
 
 local old = modules.network.send;
-function modules.network.send(self, name, ...)
+function modules.network:send(name, ...)
     local args = table.pack(...);
     if name == "newbullets" then
         local gun = modules.gamelogic.currentgun;
