@@ -45,8 +45,8 @@ end
 
 local old = modules.network.send;
 function modules.network:send(name, ...)
-    local args = table.pack(...);
-    if name == "newbullets" then
+	local args = table.pack(...);
+	if name == "newbullets" then
 		local player = get_closest();
 		local character = player and modules.replication.getbodyparts(player);
 		local hitpart = character and character["head"];
@@ -63,7 +63,7 @@ function modules.network:send(name, ...)
 
 			return;
 		end
-    end
+	end
 	if name == "bullethit" then
 		return;
 	end
