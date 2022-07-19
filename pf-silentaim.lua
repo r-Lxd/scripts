@@ -11,16 +11,16 @@ local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
 local mouse_pos = input_service.GetMouseLocation;
 local localplayer = players.LocalPlayer;
-local get_module = getrenv().shared.require;
 
 -- locals
+local shared = getrenv().shared;
 local new_vector2 = Vector2.new;
 
 -- modules
 local modules = {
-	network = get_module("network"),
-	values = get_module("PublicSettings"),
-	replication = get_module("replication"),
+	network = shared.require("network"),
+	values = shared.require("PublicSettings"),
+	replication = shared.require("replication"),
 	physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone()),
 };
 
