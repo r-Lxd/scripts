@@ -1,4 +1,4 @@
-assert(getgc, "missing dependency: getgc");
+assert(getrenv, "missing dependency: getrenv");
 
 -- services
 local players = game:GetService("Players");
@@ -11,25 +11,18 @@ local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
 local mouse_pos = input_service.GetMouseLocation;
 local localplayer = players.LocalPlayer;
+local get_module = getrenv().shared.require;
 
 -- locals
 local new_vector2 = Vector2.new;
 
 -- modules
-local modules = {};
-modules.network = require(replicated_first.ClientModules.Old.framework.network);
-modules.values = require(replicated_first.SharedModules.SharedConfigs.PublicSettings);
-modules.physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone());
-
-for _, v in next, getgc(true) do
-    if type(v) == "table" then
-        if rawget(v, "getbodyparts") then
-            modules.replication = v;
-        elseif rawget(v, "gammo") then
-            modules.gamelogic = v;
-        end
-    end
-end
+local modules = {
+	network = get_module("network"),
+	values = get_module("PublicSettings"),
+	replication = get_module("replication"),
+	physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone()),
+};
 
 -- functions
 local function get_closest()
@@ -54,26 +47,22 @@ local old = modules.network.send;
 function modules.network:send(name, ...)
     local args = table.pack(...);
     if name == "newbullets" then
-        local gun = modules.gamelogic.currentgun;
-        local data = gun and gun.data;
-        if gun and data then
-            local player = get_closest();
-            local character = player and modules.replication.getbodyparts(player);
-			local hitpart = character and character["head"];
-            if player and character and hitpart then
-                for _, bullet in next, args[1].bullets do
-                    bullet[1] = modules.physics.trajectory(args[1].firepos, modules.values.bulletAcceleration, hitpart.Position, data.bulletspeed);
-                end
+		local player = get_closest();
+		local character = player and modules.replication.getbodyparts(player);
+		local hitpart = character and character["head"];
+		if player and character and hitpart then
+			for _, bullet in next, args[1].bullets do
+				bullet[1] = modules.physics.trajectory(args[1].firepos, modules.values.bulletAcceleration, hitpart.Position, bullet[1].Magnitude);
+			end
 
-                old(self, name, table.unpack(args));
+			old(self, name, table.unpack(args));
 
-                for _, bullet in next, args[1].bullets do
-                    old(self, "bullethit", player, hitpart.Position, hitpart.Name, bullet[2]);
-                end
+			for _, bullet in next, args[1].bullets do
+				old(self, "bullethit", player, hitpart.Position, hitpart.Name, bullet[2]);
+			end
 
-                return;
-            end
-        end
+			return;
+		end
     end
 	if name == "bullethit" then
 		return;
