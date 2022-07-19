@@ -11,7 +11,6 @@ local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
 local mouse_pos = input_service.GetMouseLocation;
 local localplayer = players.LocalPlayer;
-local ticket = 0;
 
 -- locals
 local new_vector2 = Vector2.new;
@@ -59,15 +58,11 @@ function modules.network:send(name, ...)
         local data = gun and gun.data;
         if gun and data then
             local player = get_closest();
-            local character = modules.replication.getbodyparts(player);
-            if player and character then
-                local hitpart = character.head;
-
+            local character = player and modules.replication.getbodyparts(player);
+			local hitpart = character and character["head"];
+            if player and character and hitpart then
                 for _, bullet in next, args[1].bullets do
                     bullet[1] = modules.physics.trajectory(args[1].firepos, modules.values.bulletAcceleration, hitpart.Position, data.bulletspeed);
-                    bullet[2] = ticket;
-
-                    ticket += 1;
                 end
 
                 old(self, name, table.unpack(args));
@@ -80,5 +75,8 @@ function modules.network:send(name, ...)
             end
         end
     end
+	if name == "bullethit" then
+		return;
+	end
     return old(self, name, table.unpack(args));
 end
