@@ -18,54 +18,54 @@ local new_vector2 = Vector2.new;
 
 -- modules
 local modules = {
-	network = shared.require("network"),
-	values = shared.require("PublicSettings"),
-	replication = shared.require("replication"),
-	physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone()),
+    network = shared.require("network"),
+    values = shared.require("PublicSettings"),
+    replication = shared.require("replication"),
+    physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone()),
 };
 
 -- functions
 local function get_closest()
-	local closest, player = math.huge, nil;
-	for _, p in next, players:GetPlayers() do
-		local character = modules.replication.getbodyparts(p);
-		if character and p.Team ~= localplayer.Team then
-			local pos, visible = wtvp(camera, character.head.Position);
-			pos = new_vector2(pos.X, pos.Y);
+    local closest, player = math.huge, nil;
+    for _, p in next, players:GetPlayers() do
+        local character = modules.replication.getbodyparts(p);
+        if character and p.Team ~= localplayer.Team then
+            local pos, visible = wtvp(camera, character.head.Position);
+            pos = new_vector2(pos.X, pos.Y);
 
-			local magnitude = (pos - mouse_pos(input_service)).Magnitude;
-			if magnitude < closest and visible then
-				closest = magnitude;
-				player = p;
-			end
-		end
-	end
-	return player;
+            local magnitude = (pos - mouse_pos(input_service)).Magnitude;
+            if magnitude < closest and visible then
+                closest = magnitude;
+                player = p;
+            end
+        end
+    end
+    return player;
 end
 
 local old = modules.network.send;
 function modules.network:send(name, ...)
-	local args = table.pack(...);
-	if name == "newbullets" then
-		local player = get_closest();
-		local character = player and modules.replication.getbodyparts(player);
-		local hitpart = character and character["head"];
-		if player and character and hitpart then
-			for _, bullet in next, args[1].bullets do
-				bullet[1] = modules.physics.trajectory(args[1].firepos, modules.values.bulletAcceleration, hitpart.Position, bullet[1].Magnitude);
-			end
+    local args = table.pack(...);
+    if name == "newbullets" then
+        local player = get_closest();
+        local character = player and modules.replication.getbodyparts(player);
+        local hitpart = character and character["head"];
+        if player and character and hitpart then
+            for _, bullet in next, args[1].bullets do
+                bullet[1] = modules.physics.trajectory(args[1].firepos, modules.values.bulletAcceleration, hitpart.Position, bullet[1].Magnitude);
+            end
 
-			old(self, name, table.unpack(args));
+            old(self, name, table.unpack(args));
 
-			for _, bullet in next, args[1].bullets do
-				old(self, "bullethit", player, hitpart.Position, hitpart.Name, bullet[2]);
-			end
+            for _, bullet in next, args[1].bullets do
+                old(self, "bullethit", player, hitpart.Position, hitpart.Name, bullet[2]);
+            end
 
-			return;
-		end
-	end
-	if name == "bullethit" then
-		return;
-	end
+            return;
+        end
+    end
+    if name == "bullethit" then
+        return;
+    end
     return old(self, name, table.unpack(args));
 end
