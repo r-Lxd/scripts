@@ -26,21 +26,21 @@ local modules = {
 
 -- functions
 local function get_closest()
-    local closest, player = math.huge, nil;
-    for _, p in next, players:GetPlayers() do
-        local character = modules.replication.getbodyparts(p);
-        if character and p.Team ~= localplayer.Team then
-            local pos, visible = wtvp(camera, character.head.Position);
-            pos = new_vector2(pos.X, pos.Y);
+	local closest, player = math.huge, nil;
+	for _, p in next, players:GetPlayers() do
+		local character = modules.replication.getbodyparts(p);
+		if character and p.Team ~= localplayer.Team then
+			local pos, visible = wtvp(camera, character.head.Position);
+			pos = new_vector2(pos.X, pos.Y);
 
-            local magnitude = (pos - mouse_pos(input_service)).Magnitude;
-            if magnitude < closest and visible then
-                closest = magnitude;
-                player = p;
-            end
-        end
-    end
-    return player;
+			local magnitude = (pos - mouse_pos(input_service)).Magnitude;
+			if magnitude < closest and visible then
+				closest = magnitude;
+				player = p;
+			end
+		end
+	end
+	return player;
 end
 
 local old = modules.network.send;
