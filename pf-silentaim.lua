@@ -12,16 +12,13 @@ local wtvp = camera.WorldToViewportPoint;
 local mouse_pos = input_service.GetMouseLocation;
 local localplayer = players.LocalPlayer;
 
--- locals
-local shared = getrenv().shared;
-local new_vector2 = Vector2.new;
-
 -- modules
+local shared = getrenv().shared;
 local modules = {
     network = shared.require("network"),
     values = shared.require("PublicSettings"),
     replication = shared.require("replication"),
-    physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone()),
+    physics = require(replicated_first.SharedModules.Old.Utilities.Math.physics:Clone())
 };
 
 -- functions
@@ -31,7 +28,7 @@ local function get_closest()
         local character = modules.replication.getbodyparts(p);
         if character and p.Team ~= localplayer.Team then
             local pos, visible = wtvp(camera, character.head.Position);
-            pos = new_vector2(pos.X, pos.Y);
+            pos = Vector2.new(pos.X, pos.Y);
 
             local magnitude = (pos - mouse_pos(input_service)).Magnitude;
             if magnitude < closest and visible then
