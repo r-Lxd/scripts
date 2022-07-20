@@ -31,7 +31,7 @@ local function get_closest()
             pos = Vector2.new(pos.X, pos.Y);
 
             local magnitude = (pos - mouse_pos(input_service)).Magnitude;
-            if magnitude < closest and visible then
+            if magnitude < closest then
                 closest = magnitude;
                 player = p;
             end
