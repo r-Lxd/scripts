@@ -68,7 +68,7 @@ local function update_esp()
 
             if visible then
                 local scale_factor = 1 / (position.Z * tan(rad(camera.FieldOfView * 0.5)) * 2) * 100;
-                local width, height = floor(30 * scale_factor), floor(50 * scale_factor);
+                local width, height = floor(35 * scale_factor), floor(50 * scale_factor);
                 local x, y = floor(position.X), floor(position.Y);
 
                 esp.box.Size = new_vector2(width, height);
