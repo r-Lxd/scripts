@@ -16,6 +16,7 @@ local curve = { player = nil, i = 0 };
 
 -- locals
 local new_vector2 = Vector2.new;
+local clamp = math.clamp;
 
 -- functions
 local function get_closest()
@@ -47,7 +48,7 @@ run_service.Heartbeat:Connect(function(delta_time)
     if is_pressed(input_service, Enum.UserInputType.MouseButton2) then
         local player, screen = get_closest();
         if player and screen then
-            if curve.player ~= player or curve.i > 1 then
+            if curve.player ~= player then
                 curve.player = player;
                 curve.i = 0;
             end
@@ -56,7 +57,7 @@ run_service.Heartbeat:Connect(function(delta_time)
             local delta = cubic_bezier(curve.i, mouse, screen, new_vector2(0.5, 0), new_vector2(1, 0.5)) - mouse;
             mousemoverel(delta.X, delta.Y);
 
-            curve.i += delta_time * 1.5;
+            curve.i = clamp(curve.i + delta_time * 1.5, 0, 1);
         end
     else
         curve.player = nil;
