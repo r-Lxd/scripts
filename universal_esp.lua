@@ -23,10 +23,10 @@ local tan = math.tan;
 local floor = math.floor;
 
 -- functions
-local function get_scale_factor(position, fov)
+local function get_scale_factor(depth, fov)
     last_scale = last_fov == fov and last_scale or tan(rad(fov * 0.5))*2;
     last_fov = fov;
-    return 1 / (position.Z * last_scale) * 100;
+    return 1 / (depth * last_scale) * 100;
 end
 
 local function create_esp(player)
@@ -74,7 +74,7 @@ local function update_esp()
             esp.distance.Visible = visible;
 
             if visible then
-                local scale_factor = get_scale_factor(position, camera.FieldOfView);
+                local scale_factor = get_scale_factor(position.Z, camera.FieldOfView);
                 local width, height = floor(35 * scale_factor), floor(50 * scale_factor);
                 local x, y = floor(position.X), floor(position.Y);
 
