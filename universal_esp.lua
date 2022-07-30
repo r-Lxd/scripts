@@ -35,6 +35,7 @@ local function create_esp(player)
     esp.box = new_drawing("Square");
     esp.box.Color = new_color3(1,1,1);
     esp.box.Thickness = 1;
+    esp.box.Filled = false;
     
     esp.tracer = new_drawing("Line");
     esp.tracer.Color = new_color3(1,1,1);
