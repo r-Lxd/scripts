@@ -11,8 +11,7 @@ local get_pivot = workspace.GetPivot;
 local wtvp = camera.WorldToViewportPoint;
 local viewport_size = camera.ViewportSize;
 local localplayer = players.LocalPlayer;
-local cache = table.create(players.MaxPlayers);
-local last_scale, last_fov;
+local esp_cache, scale_cache = {}, {};
 
 -- locals
 local new_drawing = Drawing.new;
@@ -24,9 +23,10 @@ local floor = math.floor;
 
 -- functions
 local function get_scale_factor(depth, fov)
-    last_scale = last_fov == fov and last_scale or tan(rad(fov * 0.5)) * 2;
-    last_fov = fov;
-    return 1 / (depth * last_scale) * 100;
+    if not scale_cache[fov] then
+        scale_cache[fov] = tan(rad(fov * 0.5)) * 2;
+    end
+    return 1 / (depth * scale_cache[fov]) * 100;
 end
 
 local function create_esp(player)
@@ -50,19 +50,19 @@ local function create_esp(player)
     esp.distance.Size = 14;
     esp.distance.Center = true;
 
-    cache[player] = esp;
+    esp_cache[player] = esp;
 end
 
 local function remove_esp(player)
-    for _, drawing in next, cache[player] do
+    for _, drawing in next, esp_cache[player] do
         drawing:Remove();
     end
 
-    cache[player] = nil;
+    esp_cache[player] = nil;
 end
 
 local function update_esp()
-    for player, esp in next, cache do
+    for player, esp in next, esp_cache do
         local character = player and player.Character;
         if character and player.Team ~= localplayer.Team then
             local cframe = get_pivot(character);
