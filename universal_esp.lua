@@ -11,7 +11,7 @@ local get_pivot = workspace.GetPivot;
 local wtvp = camera.WorldToViewportPoint;
 local viewport_size = camera.ViewportSize;
 local localplayer = players.LocalPlayer;
-local cache = {};
+local cache = table.create(players.MaxPlayers);
 
 -- locals
 local new_drawing = Drawing.new;
