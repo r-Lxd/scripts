@@ -24,7 +24,7 @@ local floor = math.floor;
 
 -- functions
 local function get_scale_factor(depth, fov)
-    last_scale = last_fov == fov and last_scale or tan(rad(fov * 0.5))*2;
+    last_scale = last_fov == fov and last_scale or tan(rad(fov * 0.5)) * 2;
     last_fov = fov;
     return 1 / (depth * last_scale) * 100;
 end
