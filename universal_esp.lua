@@ -12,6 +12,7 @@ local wtvp = camera.WorldToViewportPoint;
 local viewport_size = camera.ViewportSize;
 local localplayer = players.LocalPlayer;
 local cache = table.create(players.MaxPlayers);
+local last_scale, last_fov;
 
 -- locals
 local new_drawing = Drawing.new;
@@ -22,6 +23,12 @@ local tan = math.tan;
 local floor = math.floor;
 
 -- functions
+local function get_scale_factor(position, fov)
+    last_scale = last_fov == fov and last_scale or tan(rad(fov * 0.5))*2;
+    last_fov = fov;
+    return 1 / (position.Z * last_scale) * 100;
+end
+
 local function create_esp(player)
     local esp = {};
 
@@ -67,7 +74,7 @@ local function update_esp()
             esp.distance.Visible = visible;
 
             if visible then
-                local scale_factor = 1 / (position.Z * tan(rad(camera.FieldOfView * 0.5)) * 2) * 100;
+                local scale_factor = get_scale_factor(position, camera.FieldOfView);
                 local width, height = floor(35 * scale_factor), floor(50 * scale_factor);
                 local x, y = floor(position.X), floor(position.Y);
 
@@ -82,7 +89,7 @@ local function update_esp()
 
                 esp.distance.Text = floor(position.Z) .. " studs";
                 esp.distance.Position = new_vector2(x, floor(y + height * 0.5));
-            end
+            else continue; end
         else
             esp.box.Visible = false;
             esp.tracer.Visible = false;
