@@ -11,7 +11,7 @@ local get_pivot = workspace.GetPivot;
 local wtvp = camera.WorldToViewportPoint;
 local viewport_size = camera.ViewportSize;
 local localplayer = players.LocalPlayer;
-local esp_cache, scale_cache = {}, {};
+local cache = table.create(players.MaxPlayers);
 
 -- locals
 local new_drawing = Drawing.new;
@@ -22,48 +22,41 @@ local tan = math.tan;
 local floor = math.floor;
 
 -- functions
-local function get_scale_factor(depth, fov)
-    if not scale_cache[fov] then
-        scale_cache[fov] = tan(rad(fov * 0.5)) * 2;
-    end
-    return 1 / (depth * scale_cache[fov]) * 100;
-end
-
 local function create_esp(player)
     local esp = {};
 
-    esp.box = new_drawing("Square");
+    esp.box = new_drawing("Square", true);
     esp.box.Color = new_color3(1,1,1);
     esp.box.Thickness = 1;
     esp.box.Filled = false;
     
-    esp.tracer = new_drawing("Line");
+    esp.tracer = new_drawing("Line", true);
     esp.tracer.Color = new_color3(1,1,1);
     esp.tracer.Thickness = 1;
 
-    esp.name = new_drawing("Text");
+    esp.name = new_drawing("Text", true);
     esp.name.Color = new_color3(1,1,1);
     esp.name.Size = 14;
     esp.name.Center = true;
 
-    esp.distance = new_drawing("Text");
+    esp.distance = new_drawing("Text", true);
     esp.distance.Color = new_color3(1,1,1);
     esp.distance.Size = 14;
     esp.distance.Center = true;
 
-    esp_cache[player] = esp;
+    cache[player] = esp;
 end
 
 local function remove_esp(player)
-    for _, drawing in next, esp_cache[player] do
+    for _, drawing in next, cache[player] do
         drawing:Remove();
     end
 
-    esp_cache[player] = nil;
+    cache[player] = nil;
 end
 
 local function update_esp()
-    for player, esp in next, esp_cache do
+    for player, esp in next, cache do
         local character = player and player.Character;
         if character and player.Team ~= localplayer.Team then
             local cframe = get_pivot(character);
@@ -75,7 +68,7 @@ local function update_esp()
             esp.distance.Visible = visible;
 
             if visible then
-                local scale_factor = get_scale_factor(position.Z, camera.FieldOfView);
+                local scale_factor = 1 / (position.Z * tan(rad(camera.FieldOfView * 0.5)) * 2) * 100;
                 local width, height = floor(35 * scale_factor), floor(50 * scale_factor);
                 local x, y = floor(position.X), floor(position.Y);
 
@@ -90,7 +83,7 @@ local function update_esp()
 
                 esp.distance.Text = floor(position.Z) .. " studs";
                 esp.distance.Position = new_vector2(x, floor(y + height * 0.5));
-            else continue; end
+            end
         else
             esp.box.Visible = false;
             esp.tracer.Visible = false;
