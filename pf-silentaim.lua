@@ -9,7 +9,7 @@ local replicated_first = game:GetService("ReplicatedFirst");
 -- variables
 local camera = workspace.CurrentCamera;
 local wtvp = camera.WorldToViewportPoint;
-local mouse_pos = input_service.GetMouseLocation;
+local get_mouse_pos = input_service.GetMouseLocation;
 local localplayer = players.LocalPlayer;
 
 -- modules
@@ -24,16 +24,16 @@ local modules = {
 -- functions
 local function get_closest()
     local closest, player = math.huge, nil;
-    for _, p in next, players:GetPlayers() do
-        local character = modules.replication.getbodyparts(p);
-        if character and p.Team ~= localplayer.Team then
+    for _, plr in next, players:GetPlayers() do
+        local character = modules.replication.getbodyparts(plr);
+        if character and plr.Team ~= localplayer.Team then
             local pos, visible = wtvp(camera, character.head.Position);
             pos = Vector2.new(pos.X, pos.Y);
 
-            local magnitude = (pos - mouse_pos(input_service)).Magnitude;
+            local magnitude = (pos - get_mouse_pos(input_service)).Magnitude;
             if magnitude < closest then
                 closest = magnitude;
-                player = p;
+                player = plr;
             end
         end
     end
