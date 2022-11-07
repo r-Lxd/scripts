@@ -1,4 +1,4 @@
--- phantom forces silent aim
+-- phantom forces undetected silent aim
 -- by mickey#3373, updated 11/07/22
 
 -- settings
