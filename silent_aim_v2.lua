@@ -2,7 +2,7 @@
 -- by mickey#3373, updated 11/07/22
 
 -- settings
-local hitpart = "head"; -- head, torso, larm, rarm, lleg, rleg
+local targetedPart = "head"; -- head, torso, larm, rarm, lleg, rleg
 
 -- services
 local inputService = game:GetService("UserInputService");
@@ -40,7 +40,7 @@ local function getClosest()
     repInterface.operateOnAllEntries(function(plr, entry)
         local char = getCharacter(entry);
         if char and plr.Team ~= localplayer.Team then
-            local screen = worldToScreen(char[hitpart].Position);
+            local screen = worldToScreen(char[targetedPart].Position);
             local mouse = inputService:GetMouseLocation();
             local magnitude = (screen - mouse).Magnitude;
 
@@ -60,16 +60,17 @@ local old;
 old = hookfunction(particle.new, function(args)
     if args.visualorigin then
         local player, character = getClosest();
-        local part = character and character[hitpart];
+        local part = character and character[targetedPart];
         if player and part then
-            args.velocity = physics.trajectory(
+            local velocity = physics.trajectory(
                 args.position,
                 values.bulletAcceleration,
                 part.Position,
                 args.velocity.Magnitude
             );
 
-            debug.setupvalue(args.ontouch, 3, args.velocity);
+            args.velocity = velocity;
+            debug.setupvalue(args.ontouch, 3, velocity);
         end
     end
     return old(args);
