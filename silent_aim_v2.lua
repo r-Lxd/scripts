@@ -1,4 +1,4 @@
--- phantom forces undetected silent aim
+-- phantom forces silent aim
 -- by mickey#3373, updated 11/07/22
 
 -- settings
@@ -62,15 +62,17 @@ old = hookfunction(particle.new, function(args)
         local player, character = getClosest();
         local part = character and character[targetedPart];
         if player and part then
-            local velocity = physics.trajectory(
+            local bulletSpeed = args.velocity.Magnitude;
+            local travelTime = (part.Position - args.position).Magnitude / bulletSpeed;
+
+            args.velocity = physics.trajectory(
                 args.position,
                 values.bulletAcceleration,
-                part.Position,
-                args.velocity.Magnitude
+                part.Position + part.Velocity * travelTime,
+                bulletSpeed
             );
 
-            args.velocity = velocity;
-            debug.setupvalue(args.ontouch, 3, velocity);
+            debug.setupvalue(args.ontouch, 3, args.velocity);
         end
     end
     return old(args);
