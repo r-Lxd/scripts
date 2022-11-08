@@ -70,6 +70,7 @@ old = hookfunction(particle.new, function(args)
                 args.acceleration,
                 part.Position + entry._velspring.p * travelTime,
                 bulletSpeed);
+
             debug.setupvalue(args.ontouch, 3, args.velocity);
         end
     end
