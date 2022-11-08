@@ -2,7 +2,7 @@
 -- by mickey#3373, updated 11/07/22
 
 -- settings
-local targetedPart = "Head"; -- Head, Torso, Left Leg, etc.
+local targetedPart = ... or "Head"; -- Head, Torso, Left Leg, etc.
 
 -- services
 local inputService = game:GetService("UserInputService");
