@@ -24,14 +24,14 @@ local repInterface = shared.require("ReplicationInterface");
 local function getCharacter(entry)
     local charObject = entry and entry:getThirdPersonObject();
     if charObject then 
-		return charObject:getCharacterHash();
-	end
+        return charObject:getCharacterHash();
+    end
 end
 
 local function worldToScreen(position)
     local screen = worldtoscreen and
-		worldtoscreen({ position })[1] or
-		camera:WorldToViewportPoint(position);
+        worldtoscreen({ position })[1] or
+        camera:WorldToViewportPoint(position);
     return Vector2.new(screen.X, screen.Y), screen.Z > 0, screen.Z;
 end
 
