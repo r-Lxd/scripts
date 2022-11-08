@@ -2,7 +2,7 @@
 -- by mickey#3373, updated 11/07/22
 
 -- settings
-local targetedPart = "head"; -- head, torso, larm, rarm, lleg, rleg
+local targetedPart = "Head"; -- Head, Torso, Left Leg, etc.
 
 -- services
 local inputService = game:GetService("UserInputService");
@@ -24,7 +24,7 @@ local repInterface = shared.require("ReplicationInterface");
 local function getCharacter(entry)
     local charObject = entry and entry:getThirdPersonObject();
     if charObject then
-        return charObject:getCharacterHash();
+        return charObject:getCharacterModel();
     end
 end
 
@@ -42,11 +42,11 @@ local function getClosest()
     repInterface.operateOnAllEntries(function(plr, entry)
         local char = getCharacter(entry);
         if char and plr.Team ~= localplayer.Team then
-            local screen = worldToScreen(char[targetedPart].Position);
+            local screen, inBounds = worldToScreen(char[targetedPart].Position);
             local mouse = inputService:GetMouseLocation();
             local magnitude = (screen - mouse).Magnitude;
 
-            if magnitude < closest then
+            if magnitude < closest and inBounds then
                 closest = magnitude;
                 player = plr;
                 character = char;
