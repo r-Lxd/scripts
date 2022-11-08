@@ -22,15 +22,17 @@ local repInterface = shared.require("ReplicationInterface");
 
 -- functions
 local function getCharacter(entry)
-    if not entry then return; end
-    local thirdPerson = entry:getThirdPersonObject();
-    if not thirdPerson then return; end
-    return thirdPerson:getCharacterHash();
+    local charObject = entry and entry:getThirdPersonObject();
+    if charObject then 
+		return charObject:getCharacterHash();
+	end
 end
 
 local function worldToScreen(position)
-    local screen, inBounds = camera:WorldToViewportPoint(position);
-    return Vector2.new(screen.X, screen.Y), inBounds, screen.Z;
+    local screen = worldtoscreen and
+		worldtoscreen({ position })[1] or
+		camera:WorldToViewportPoint(position);
+    return Vector2.new(screen.X, screen.Y), screen.Z > 0, screen.Z;
 end
 
 local function getClosest()
