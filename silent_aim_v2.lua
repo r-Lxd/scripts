@@ -2,9 +2,9 @@
 -- by mickey#3373, updated 11/07/22
 
 -- services
-local inputService = game:GetService("UserInputService");
 local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
+local inputService = game:GetService("UserInputService");
 
 -- variables
 local shared = getrenv().shared;
@@ -13,8 +13,8 @@ local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 
 -- modules
-local particle = shared.require("particle");
 local physics = shared.require("physics");
+local particle = shared.require("particle");
 local values = shared.require("PublicSettings");
 local repInterface = shared.require("ReplicationInterface");
 
