@@ -7,10 +7,10 @@ local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
 
 -- variables
+local shared = getrenv().shared;
 local hitpart = getgenv().targetedPart or "Head";
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
-local shared = getrenv().shared;
 
 -- modules
 local particle = shared.require("particle");
