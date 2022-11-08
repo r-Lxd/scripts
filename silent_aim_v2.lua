@@ -59,7 +59,7 @@ end
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
-    if args.visualorigin then
+    if args.onplayerhit then
         local player, character = getClosest();
         local part = character and character[targetedPart];
         if player and part then
