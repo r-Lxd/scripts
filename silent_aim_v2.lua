@@ -23,7 +23,7 @@ local repInterface = shared.require("ReplicationInterface");
 -- functions
 local function getCharacter(entry)
     local charObject = entry and entry:getThirdPersonObject();
-    if charObject then 
+    if charObject then
         return charObject:getCharacterHash();
     end
 end
