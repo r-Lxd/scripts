@@ -1,14 +1,13 @@
 -- phantom forces silent aim
 -- by mickey#3373, updated 11/07/22
 
-assert(targetedPart, "Target part not defined.");
-
 -- services
 local inputService = game:GetService("UserInputService");
 local players = game:GetService("Players");
 local workspace = game:GetService("Workspace");
 
 -- variables
+local hitpart = getgenv().targetedPart or "Head";
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 local shared = getrenv().shared;
@@ -41,7 +40,7 @@ local function getClosest()
     repInterface.operateOnAllEntries(function(plr, entry)
         local char = getCharacter(entry);
         if char and plr.Team ~= localplayer.Team then
-            local screen, inBounds, depth = worldToScreen(char[targetedPart].Position);
+            local screen, inBounds, depth = worldToScreen(char[hitpart].Position);
             local mouse = inputService:GetMouseLocation();
             local priority = (screen - mouse).Magnitude + depth;
 
@@ -61,7 +60,7 @@ local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit then
         local player, character = getClosest();
-        local part = character and character[targetedPart];
+        local part = character and character[hitpart];
         if player and part then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (part.Position - args.position).Magnitude / bulletSpeed;
@@ -70,8 +69,7 @@ old = hookfunction(particle.new, function(args)
                 args.position,
                 values.bulletAcceleration,
                 part.Position + part.Velocity * travelTime,
-                bulletSpeed
-            );
+                bulletSpeed);
 
             debug.setupvalue(args.ontouch, 3, args.velocity);
         end
