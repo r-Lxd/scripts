@@ -58,7 +58,7 @@ end
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
-    if args.onplayerhit then
+    if args.onplayerhit and not checkcaller() then
         local player, character = getClosest();
         local part = character and character[hitpart];
         if player and part then
