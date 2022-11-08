@@ -15,8 +15,7 @@ local camera = workspace.CurrentCamera;
 -- modules
 local physics = shared.require("physics");
 local particle = shared.require("particle");
-local values = shared.require("PublicSettings");
-local repInterface = shared.require("ReplicationInterface");
+local replication = shared.require("ReplicationInterface");
 
 -- functions
 local function getCharacter(entry)
@@ -37,7 +36,7 @@ local function getClosest()
     local highestPriority = math.huge;
     local player, character, entry;
 
-    repInterface.operateOnAllEntries(function(plr, plrEntry)
+    replication.operateOnAllEntries(function(plr, plrEntry)
         local char = getCharacter(plrEntry);
         if char and plr.Team ~= localplayer.Team then
             local screen, inBounds, depth = worldToScreen(char[hitpart].Position);
@@ -68,10 +67,9 @@ old = hookfunction(particle.new, function(args)
 
             args.velocity = physics.trajectory(
                 args.position,
-                values.bulletAcceleration,
+                args.acceleration,
                 part.Position + entry._velspring.p * travelTime,
                 bulletSpeed);
-
             debug.setupvalue(args.ontouch, 3, args.velocity);
         end
     end
