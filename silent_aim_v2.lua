@@ -1,8 +1,7 @@
 -- phantom forces silent aim
 -- by mickey#3373, updated 11/07/22
 
--- settings
-local targetedPart = ... or "Head"; -- Head, Torso, Left Leg, etc.
+assert(targetedPart, "Target part not defined.");
 
 -- services
 local inputService = game:GetService("UserInputService");
