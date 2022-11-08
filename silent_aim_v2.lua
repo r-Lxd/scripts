@@ -36,18 +36,18 @@ local function worldToScreen(position)
 end
 
 local function getClosest()
-    local closest = math.huge;
+    local cPriority = math.huge;
     local player, character;
 
     repInterface.operateOnAllEntries(function(plr, entry)
         local char = getCharacter(entry);
         if char and plr.Team ~= localplayer.Team then
-            local screen, inBounds = worldToScreen(char[targetedPart].Position);
+            local screen, inBounds, depth = worldToScreen(char[targetedPart].Position);
             local mouse = inputService:GetMouseLocation();
-            local magnitude = (screen - mouse).Magnitude;
+            local priority = (screen - mouse).Magnitude + depth;
 
-            if magnitude < closest and inBounds then
-                closest = magnitude;
+            if priority < cPriority and inBounds then
+                cPriority = priority;
                 player = plr;
                 character = char;
             end
