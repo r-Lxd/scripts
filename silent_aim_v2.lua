@@ -20,9 +20,7 @@ local replication = shared.require("ReplicationInterface");
 -- functions
 local function getCharacter(entry)
     local charObject = entry and entry:getThirdPersonObject();
-    if charObject then
-        return charObject:getCharacterModel();
-    end
+    return charObject and charObject:getCharacterModel();
 end
 
 local function worldToScreen(position)
