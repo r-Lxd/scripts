@@ -34,41 +34,42 @@ local function worldToScreen(position)
 end
 
 local function getClosest()
-    local cPriority = math.huge;
-    local player, character;
+    local highestPriority = math.huge;
+    local player, character, entry;
 
-    repInterface.operateOnAllEntries(function(plr, entry)
-        local char = getCharacter(entry);
+    repInterface.operateOnAllEntries(function(plr, plrEntry)
+        local char = getCharacter(plrEntry);
         if char and plr.Team ~= localplayer.Team then
             local screen, inBounds, depth = worldToScreen(char[hitpart].Position);
             local mouse = inputService:GetMouseLocation();
             local priority = (screen - mouse).Magnitude + depth;
 
-            if priority < cPriority and inBounds then
-                cPriority = priority;
+            if priority < highestPriority and inBounds then
+                highestPriority = priority;
                 player = plr;
                 character = char;
+                entry = plrEntry;
             end
         end
     end);
 
-    return player, character;
+    return player, character, entry;
 end
 
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and not checkcaller() then
-        local player, character = getClosest();
+        local player, character, entry = getClosest();
         local part = character and character[hitpart];
-        if player and part then
+        if player and part and entry then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (part.Position - args.position).Magnitude / bulletSpeed;
 
             args.velocity = physics.trajectory(
                 args.position,
                 values.bulletAcceleration,
-                part.Position + part.Velocity * travelTime,
+                part.Position + entry._velspring.p * travelTime,
                 bulletSpeed);
 
             debug.setupvalue(args.ontouch, 3, args.velocity);
