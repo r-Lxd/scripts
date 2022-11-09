@@ -58,8 +58,8 @@ local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and not checkcaller() then
         local player, character, entry = getClosest();
-        local part = character and character[hitpart];
-        if player and part and entry then
+        if player and character and entry then
+            local part = character[hitpart];
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (part.Position - args.position).Magnitude / bulletSpeed;
 
