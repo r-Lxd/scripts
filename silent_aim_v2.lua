@@ -34,18 +34,18 @@ local function getClosest()
     local highestPriority = math.huge;
     local position, entry;
 
-    replication.operateOnAllEntries(function(plr, plrEntry)
-        local char = getCharacter(plrEntry);
-        if char and plr.Team ~= localplayer.Team then
-            local plrPosition = char[hitpart].Position;
-            local screen, inBounds, depth = worldToScreen(partPosition);
+    replication.operateOnAllEntries(function(player, _entry)
+        local character = getCharacter(_entry);
+        if character and player.Team ~= localplayer.Team then
+            local _position = character[hitpart].Position;
+            local screen, inBounds, depth = worldToScreen(_position);
             local mouse = inputService:GetMouseLocation();
             local priority = (screen - mouse).Magnitude + depth;
 
             if priority < highestPriority and inBounds then
                 highestPriority = priority;
-                position = plrPosition;
-                entry = plrEntry;
+                position = _position;
+                entry = _entry;
             end
         end
     end);
