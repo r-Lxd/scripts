@@ -31,26 +31,26 @@ local function worldToScreen(position)
 end
 
 local function getClosest()
-    local highestPriority = math.huge;
-    local position, entry;
+    local _priority = math.huge;
+    local _position, _entry;
 
-    replication.operateOnAllEntries(function(player, _entry)
-        local character = getCharacter(_entry);
+    replication.operateOnAllEntries(function(player, entry)
+        local character = getCharacter(entry);
         if character and player.Team ~= localplayer.Team then
-            local _position = character[hitpart].Position;
-            local screen, inBounds, depth = worldToScreen(_position);
+            local position = character[hitpart].Position;
+            local screen, inBounds, depth = worldToScreen(position);
             local mouse = inputService:GetMouseLocation();
             local priority = (screen - mouse).Magnitude + depth;
 
-            if priority < highestPriority and inBounds then
-                highestPriority = priority;
-                position = _position;
-                entry = _entry;
+            if priority < _priority and inBounds then
+                _priority = priority;
+                _position = position;
+                _entry = entry;
             end
         end
     end);
 
-    return position, entry;
+    return _position, _entry;
 end
 
 -- hooks
