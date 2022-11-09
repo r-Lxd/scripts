@@ -32,40 +32,40 @@ end
 
 local function getClosest()
     local highestPriority = math.huge;
-    local part, entry;
+    local position, entry;
 
     replication.operateOnAllEntries(function(plr, plrEntry)
         local char = getCharacter(plrEntry);
         if char and plr.Team ~= localplayer.Team then
-            local hitPart = char:FindFirstChild(hitpart);  
-            local screen, inBounds, depth = worldToScreen(hitPart.Position);
+            local partPosition = char[hitpart].Position;  
+            local screen, inBounds, depth = worldToScreen(partPosition);
             local mouse = inputService:GetMouseLocation();
             local priority = (screen - mouse).Magnitude + depth;
 
             if priority < highestPriority and inBounds then
                 highestPriority = priority;
-                part = hitPart;
+                position = partPosition;
                 entry = plrEntry;
             end
         end
     end);
 
-    return part, entry;
+    return position, entry;
 end
 
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and not checkcaller() then
-        local part, entry = getClosest();
-        if part and entry then
+        local position, entry = getClosest();
+        if position and entry then
             local bulletSpeed = args.velocity.Magnitude;
-            local travelTime = (part.Position - args.position).Magnitude / bulletSpeed;
+            local travelTime = (position - args.position).Magnitude / bulletSpeed;
 
             args.velocity = physics.trajectory(
                 args.position,
                 args.acceleration,
-                part.Position + entry._velspring.p * travelTime,
+                position + entry._velspring.p * travelTime,
                 bulletSpeed);
 
             debug.setupvalue(args.ontouch, 3, args.velocity);
