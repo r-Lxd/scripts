@@ -11,7 +11,6 @@ local shared = getrenv().shared;
 local hitpart = getgenv().targetedPart or "Head";
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
-local center = camera.ViewportSize * 0.5;
 
 -- modules
 local physics = shared.require("physics");
@@ -40,6 +39,7 @@ local function getClosest()
         if character and player.Team ~= localplayer.Team then
             local position = character[hitpart].Position;
             local screen, inBounds, depth = worldToScreen(position);
+            local center = camera.ViewportSize * 0.5;
             local priority = (screen - center).Magnitude + depth;
 
             if priority < _priority and inBounds then
