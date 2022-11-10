@@ -8,7 +8,6 @@ local inputService = game:GetService("UserInputService");
 
 -- variables
 local shared = getrenv().shared;
-local hitpart = getgenv().targetedPart or "Head";
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 
@@ -32,40 +31,40 @@ end
 
 local function getClosest()
     local _priority = math.huge;
-    local _position, _entry;
+    local _part, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
         local character = getCharacter(entry);
         if character and player.Team ~= localplayer.Team then
-            local position = character[hitpart].Position;
-            local screen, inBounds = worldToScreen(position);
+            local part = character[targetedPart or "Torso"];
+            local screen, inBounds = worldToScreen(part.Position);
             local center = camera.ViewportSize * 0.5;
 
             local priority = (screen - center).Magnitude;
             if priority < _priority and inBounds then
                 _priority = priority;
-                _position = position;
+                _part = part;
                 _entry = entry;
             end
         end
     end);
 
-    return _position, _entry;
+    return _part, _entry;
 end
 
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and not checkcaller() then
-        local position, entry = getClosest();
-        if position and entry then
+        local part, entry = getClosest();
+        if part and entry then
             local bulletSpeed = args.velocity.Magnitude;
-            local travelTime = (position - args.position).Magnitude / bulletSpeed;
+            local travelTime = (part.Position - args.position).Magnitude / bulletSpeed;
 
             args.velocity = physics.trajectory(
                 args.position,
                 args.acceleration,
-                position + entry._velspring.p * travelTime,
+                part.Position + entry._velspring.p * travelTime,
                 bulletSpeed);
 
             debug.setupvalue(args.ontouch, 3, args.velocity);
