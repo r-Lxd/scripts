@@ -30,7 +30,7 @@ local function worldToScreen(position)
 end
 
 local function getClosest()
-    local _priority = math.huge;
+    local _priority = fov or math.huge;
     local _part, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
