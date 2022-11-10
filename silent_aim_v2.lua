@@ -36,7 +36,7 @@ local function getClosest()
     replication.operateOnAllEntries(function(player, entry)
         local character = getCharacter(entry);
         if character and player.Team ~= localplayer.Team then
-            local part = character[targetedPart or "Torso"];
+            local part = character[targetedPart or "Head"];
             local screen, inBounds = worldToScreen(part.Position);
             local center = camera.ViewportSize * 0.5;
 
