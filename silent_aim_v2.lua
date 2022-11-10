@@ -38,10 +38,10 @@ local function getClosest()
         local character = getCharacter(entry);
         if character and player.Team ~= localplayer.Team then
             local position = character[hitpart].Position;
-            local screen, inBounds, depth = worldToScreen(position);
+            local screen, inBounds = worldToScreen(position);
             local center = camera.ViewportSize * 0.5;
-            local priority = (screen - center).Magnitude + depth;
 
+            local priority = (screen - center).Magnitude;
             if priority < _priority and inBounds then
                 _priority = priority;
                 _position = position;
