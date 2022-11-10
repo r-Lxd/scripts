@@ -7,7 +7,7 @@ local workspace = game:GetService("Workspace");
 
 -- variables
 local camera = workspace.CurrentCamera;
-local get_pivot = workspace.GetPivot;
+local get_cframe = workspace.GetModelCFrame;
 local wtvp = camera.WorldToViewportPoint;
 local viewport_size = camera.ViewportSize;
 local localplayer = players.LocalPlayer;
@@ -59,7 +59,7 @@ local function update_esp()
     for player, esp in next, cache do
         local character = player and player.Character;
         if character and player.Team ~= localplayer.Team then
-            local cframe = get_pivot(character);
+            local cframe = get_cframe(character);
             local position, visible = wtvp(camera, cframe.Position);
 
             esp.box.Visible = visible;
