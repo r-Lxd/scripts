@@ -33,15 +33,17 @@ local function getClosest()
     local _priority = fov or math.huge;
     local _position, _entry;
 
+    local partName = random and
+        (math.random() > 0.5 and "Head" or "Torso") or
+        (targetedPart or "Head");
+
     replication.operateOnAllEntries(function(player, entry)
         local character = getCharacter(entry);
         if character and player.Team ~= localplayer.Team then
-            local part = random and
-            	character[math.random() > 0.5 and "Head" or "Torso"] or
-                character[targetedPart or "Head"];
-
+            local part = character[partName];
             local screen, inBounds = worldToScreen(part.Position);
             local center = camera.ViewportSize * 0.5;
+            
             local priority = (screen - center).Magnitude;
             if priority < _priority and inBounds then
                 _priority = priority;
