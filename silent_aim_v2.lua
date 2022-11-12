@@ -29,18 +29,14 @@ local function worldToScreen(position)
     return Vector2.new(screen.X, screen.Y), screen.Z > 0, screen.Z;
 end
 
-local function getClosest()
+local function getClosest(hitPart)
     local _priority = fov or math.huge;
     local _position, _entry;
-
-    local partName = random and
-        (math.random() > 0.5 and "Head" or "Torso") or
-        (targetedPart or "Head");
 
     replication.operateOnAllEntries(function(player, entry)
         local character = getCharacter(entry);
         if character and player.Team ~= localplayer.Team then
-            local part = character[partName];
+            local part = character[hitPart];
             local screen, inBounds = worldToScreen(part.Position);
             local center = camera.ViewportSize * 0.5;
             
@@ -60,7 +56,11 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and not checkcaller() then
-        local position, entry = getClosest();
+        local hitPart = random and
+            (math.random() > 0.5 and "Head" or "Torso") or
+            (targetedPart or "Head");
+            
+        local position, entry = getClosest(hitPart);
         if position and entry then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (position - args.position).Magnitude / bulletSpeed;
