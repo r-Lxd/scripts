@@ -37,10 +37,12 @@ local function getClosest(hitPart)
     replication.operateOnAllEntries(function(player, entry)
         local character = getCharacter(entry);
         if character and player.Team ~= localplayer.Team then
-            local part = character[hitPart];
+            local part = random and
+				character[math.random() > 0.5 and "Head" or "Torso"] or
+				character[targetedPart or "Head"];
+
             local screen, inBounds = worldToScreen(part.Position);
             local center = camera.ViewportSize * 0.5;
-            
             local priority = (screen - center).Magnitude;
             if priority < _priority and inBounds then
                 _priority = priority;
@@ -57,11 +59,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and not checkcaller() then
-        local hitPart = random and
-            (math.random() > 0.5 and "Head" or "Torso") or
-            (targetedPart or "Head");
-            
-        local position, entry = getClosest(hitPart);
+        local position, entry = getClosest();
         if position and entry then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (position - args.position).Magnitude / bulletSpeed;
