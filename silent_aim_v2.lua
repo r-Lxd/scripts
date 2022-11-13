@@ -2,13 +2,8 @@
 -- by mickey#3373, updated 11/07/22
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
--- services
-local players = game:GetService("Players");
-local workspace = game:GetService("Workspace");
-local inputService = game:GetService("UserInputService");
-
 -- variables
-local shared = getrenv().shared;
+local players = game:GetService("Players");
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 local ignoreList = {
@@ -18,14 +13,15 @@ local ignoreList = {
 };
 
 -- modules
+local shared = getrenv().shared;
 local physics = shared.require("physics");
 local particle = shared.require("particle");
 local replication = shared.require("ReplicationInterface");
 
 -- functions
 local function getCharacter(entry)
-    local character = entry and entry._thirdPersonObject;
-    return character and character._character;
+    local _3pObject = entry and entry._thirdPersonObject;
+    return _3pObject and _3pObject._character;
 end
 
 local function worldToScreen(position)
@@ -39,8 +35,8 @@ local function isVisible(...)
     return #camera:GetPartsObscuringTarget({ ... }, ignoreList) == 0;
 end
 
-local function getClosest()
-    local _priority = fov or math.huge;
+local function getClosest(firepos)
+    local _magnitude = fov or math.huge;
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
@@ -51,10 +47,12 @@ local function getClosest()
                 character[targetedPart or "Head"];
 
             if not (visibleCheck and not isVisible(part.Position)) then
-                local screen, inBounds = worldToScreen(part.Position);
-                local priority = (screen - camera.ViewportSize * 0.5).Magnitude;
-                if priority < _priority and inBounds then
-                    _priority = priority;
+                local origin = worldToScreen(firepos);
+                local target, inBounds = worldToScreen(part.Position);
+
+                local magnitude = (target - origin).Magnitude;
+                if magnitude < _magnitude and inBounds then
+                    _magnitude = magnitude;
                     _position = part.Position;
                     _entry = entry;
                 end
@@ -69,7 +67,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest();
+        local position, entry = getClosest(args.position);
         if position and entry then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (position - args.position).Magnitude / bulletSpeed;
