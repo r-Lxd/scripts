@@ -20,8 +20,8 @@ local replication = shared.require("ReplicationInterface");
 
 -- functions
 local function getCharacter(entry)
-    local _3pObject = entry and entry._thirdPersonObject;
-    return _3pObject and _3pObject._character;
+    local tpObject = entry and entry._thirdPersonObject;
+    return tpObject and tpObject._character;
 end
 
 local function worldToScreen(position)
