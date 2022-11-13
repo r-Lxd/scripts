@@ -68,12 +68,12 @@ end
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
-    if args.onplayerhit and not checkcaller() then
+    if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
         local position, entry = getClosest();
         if position and entry then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (position - args.position).Magnitude / bulletSpeed;
-            local index = table.find(debug.getstack(2), args.velocity);
+            local idx = table.find(debug.getstack(2), args.velocity);
 
             args.velocity = physics.trajectory(
                 args.position,
@@ -81,7 +81,7 @@ old = hookfunction(particle.new, function(args)
                 position + entry._velspring.p * travelTime,
                 bulletSpeed);
 
-            debug.setstack(2, index, args.velocity);
+            debug.setstack(2, idx, args.velocity);
         end
     end
     return old(args);
