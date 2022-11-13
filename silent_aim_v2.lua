@@ -57,21 +57,25 @@ local function getClosest()
     return _position, _entry;
 end
 
+local function trajectory(origin, target, velocity, gravity, speed)
+    local _, t = physics.trajectory(origin, gravity, target, speed);
+    return physics.trajectory(origin, gravity, target + velocity * t, speed);
+end
+
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
         local position, entry = getClosest();
         if position and entry then
-            local bulletSpeed = args.velocity.Magnitude;
-            local travelTime = (position - args.position).Magnitude / bulletSpeed;
             local index = table.find(debug.getstack(2), args.velocity);
 
-            args.velocity = physics.trajectory(
+            args.velocity = trajectory(
                 args.position,
+                position,
+                entry._velspring.p,
                 args.acceleration,
-                position + entry._velspring.p * travelTime,
-                bulletSpeed);
+                args.velocity.Magnitude);
 
             debug.setstack(2, index, args.velocity);
         end
