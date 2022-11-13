@@ -65,6 +65,10 @@ local function getClosest()
     return _position, _entry;
 end
 
+local function findStackIndex(idx, value)
+    return table.find(debug.getstack(idx + 1), value);
+end
+
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
@@ -73,6 +77,7 @@ old = hookfunction(particle.new, function(args)
         if position and entry then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (position - args.position).Magnitude / bulletSpeed;
+            local idx = findStackIndex(2, args.velocity);
 
             args.velocity = physics.trajectory(
                 args.position,
@@ -80,7 +85,7 @@ old = hookfunction(particle.new, function(args)
                 position + entry._velspring.p * travelTime,
                 bulletSpeed);
 
-            debug.setupvalue(args.ontouch, 3, args.velocity);
+            debug.setstack(2, idx, args.velocity);
         end
     end
     return old(args);
