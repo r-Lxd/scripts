@@ -11,6 +11,11 @@ local inputService = game:GetService("UserInputService");
 local shared = getrenv().shared;
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
+local ignoreList = {
+    workspace.Terrain,
+    workspace.Players,
+    workspace.Ignore
+};
 
 -- modules
 local physics = shared.require("physics");
@@ -30,6 +35,10 @@ local function worldToScreen(position)
     return Vector2.new(screen.X, screen.Y), screen.Z > 0, screen.Z;
 end
 
+local function isVisible(...)
+    return #camera:GetPartsObscuringTarget({ ... }, ignoreList) == 0;
+end
+
 local function getClosest()
     local _priority = fov or math.huge;
     local _position, _entry;
@@ -41,12 +50,14 @@ local function getClosest()
                 character[math.random() > 0.5 and "Head" or "Torso"] or
                 character[targetedPart or "Head"];
 
-            local screen, inBounds = worldToScreen(part.Position);
-            local priority = (screen - camera.ViewportSize * 0.5).Magnitude;
-            if priority < _priority and inBounds then
-                _priority = priority;
-                _position = part.Position;
-                _entry = entry;
+            if not (visibleCheck and not isVisible(part.Position)) then
+                local screen, inBounds = worldToScreen(part.Position);
+                local priority = (screen - camera.ViewportSize * 0.5).Magnitude;
+                if priority < _priority and inBounds then
+                    _priority = priority;
+                    _position = part.Position;
+                    _entry = entry;
+                end
             end
         end
     end);
