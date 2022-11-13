@@ -42,8 +42,7 @@ local function getClosest()
                 character[targetedPart or "Head"];
 
             local screen, inBounds = worldToScreen(part.Position);
-            local center = camera.ViewportSize * 0.5;
-            local priority = (screen - center).Magnitude;
+            local priority = (screen - camera.ViewportSize * 0.5).Magnitude;
             if priority < _priority and inBounds then
                 _priority = priority;
                 _position = part.Position;
