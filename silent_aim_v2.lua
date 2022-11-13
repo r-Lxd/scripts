@@ -30,7 +30,7 @@ local function worldToScreen(position)
     return Vector2.new(screen.X, screen.Y), screen.Z > 0, screen.Z;
 end
 
-local function getClosest(hitPart)
+local function getClosest()
     local _priority = fov or math.huge;
     local _position, _entry;
 
