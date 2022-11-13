@@ -49,7 +49,6 @@ local function getClosest()
             if not (visibleCheck and not isVisible(part.Position)) then
                 local screen, inBounds = worldToScreen(part.Position);
                 local magnitude = (screen - camera.ViewportSize * 0.5).Magnitude;
-
                 if magnitude < _magnitude and inBounds then
                     _magnitude = magnitude;
                     _position = part.Position;
