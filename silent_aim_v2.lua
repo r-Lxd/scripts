@@ -19,11 +19,6 @@ local particle = shared.require("particle");
 local replication = shared.require("ReplicationInterface");
 
 -- functions
-local function getCharacter(entry)
-    local tpObject = entry and entry._thirdPersonObject;
-    return tpObject and tpObject._character;
-end
-
 local function worldToScreen(position)
     local screen = worldtoscreen and
         worldtoscreen({ position })[1] or
@@ -40,7 +35,8 @@ local function getClosest()
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
-        local character = getCharacter(entry);
+        local tpObject = entry and entry._thirdPersonObject;
+        local character = tpObject and tpObject._character;
         if character and player.Team ~= localplayer.Team then
             local part = targetedPart == "Random" and
                 character[math.random() > 0.5 and "Head" or "Torso"] or
