@@ -35,7 +35,7 @@ local function isVisible(...)
     return #camera:GetPartsObscuringTarget({ ... }, ignoreList) == 0;
 end
 
-local function getClosest(firepos)
+local function getClosest()
     local _magnitude = fov or math.huge;
     local _position, _entry;
 
@@ -47,10 +47,9 @@ local function getClosest(firepos)
                 character[targetedPart or "Head"];
 
             if not (visibleCheck and not isVisible(part.Position)) then
-                local origin = worldToScreen(firepos);
-                local target, inBounds = worldToScreen(part.Position);
+                local screen, inBounds = worldToScreen(part.Position);
+                local magnitude = (screen - camera.ViewportSize * 0.5).Magnitude;
 
-                local magnitude = (target - origin).Magnitude;
                 if magnitude < _magnitude and inBounds then
                     _magnitude = magnitude;
                     _position = part.Position;
@@ -67,7 +66,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest(args.position);
+        local position, entry = getClosest();
         if position and entry then
             local bulletSpeed = args.velocity.Magnitude;
             local travelTime = (position - args.position).Magnitude / bulletSpeed;
