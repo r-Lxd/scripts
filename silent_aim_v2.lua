@@ -6,18 +6,12 @@
 local players = game:GetService("Players");
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
-local ignoreList = {
-    workspace.Terrain,
-    workspace.Players,
-    workspace.Ignore
-};
+local shared = getrenv().shared;
 
 -- modules
-local shared = getrenv().shared;
 local physics = shared.require("physics");
 local particle = shared.require("particle");
 local replication = shared.require("ReplicationInterface");
-
 local solve = debug.getupvalue(physics.trajectory, 1);
 
 -- functions
@@ -28,11 +22,11 @@ local function worldToScreen(position)
     return Vector2.new(screen.X, screen.Y), screen.Z > 0, screen.Z;
 end
 
-local function isVisible(...)
-    return #camera:GetPartsObscuringTarget({ ... }, ignoreList) == 0;
+local function isVisible(position, ignore)
+    return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
 end
 
-local function getClosest()
+local function getClosest(ignore)
     local _magnitude = fov or math.huge;
     local _position, _entry;
 
@@ -44,7 +38,7 @@ local function getClosest()
                 character[math.random() > 0.5 and "Head" or "Torso"] or
                 character[targetedPart or "Head"];
 
-            if not (visibleCheck and not isVisible(part.Position)) then
+            if not (visibleCheck and not isVisible(part.Position, ignore)) then
                 local screen, inBounds = worldToScreen(part.Position);
                 local magnitude = (screen - camera.ViewportSize * 0.5).Magnitude;
                 if magnitude < _magnitude and inBounds then
@@ -80,7 +74,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest();
+        local position, entry = getClosest(args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
