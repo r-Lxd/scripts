@@ -61,16 +61,19 @@ end
 
 -- credits to integer for the solve parameters, i'm terrible at math.
 local function trajectory(dir, velocity, accel, speed)
-    local r1, r2, r3, r4 = solve(
+    local roots = {solve(
         accel:Dot(accel) * 0.25,
         -accel:Dot(velocity),
         accel:Dot(dir) + velocity:Dot(velocity) - speed*speed,
         velocity:Dot(dir) * 2,
         dir:Dot(dir)
-    );
+    )};
 
-    local root = (r1>0 and r1) or (r2>0 and r2) or (r3>0 and r3) or (r4>0 and r4);
-    return 0.5*accel*root + dir/root + velocity, root;
+    for _, root in next, roots do
+        if root > 0 then
+            return 0.5*accel*root + dir/root + velocity, root;
+        end
+    end
 end
 
 -- hooks
