@@ -59,7 +59,7 @@ local function getClosest()
     return _position, _entry;
 end
 
--- credits to integer for the solve() arguments, i'm terrible at math.
+-- credits to integer for the solve parameters, i'm terrible at math.
 local function trajectory(dir, velocity, accel, speed)
     local roots = {solve(
         accel:Dot(accel) * 0.25,
