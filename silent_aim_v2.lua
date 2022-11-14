@@ -59,7 +59,7 @@ local function getClosest()
     return _position, _entry;
 end
 
--- credits to integer for the solve parameters, i'm terrible at math.
+-- credits to integer, i'm terrible at math.
 local function trajectory(dir, velocity, accel, speed)
     local roots = {solve(
         accel:Dot(accel) * 0.25,
@@ -85,7 +85,7 @@ old = hookfunction(particle.new, function(args)
             local index = table.find(debug.getstack(2), args.velocity);
 
             args.velocity = trajectory(
-                position - args.position,
+                position - args.visualorigin,
                 entry._velspring.p,
                 args.acceleration,
                 args.velocity.Magnitude);
