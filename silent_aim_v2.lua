@@ -18,6 +18,8 @@ local physics = shared.require("physics");
 local particle = shared.require("particle");
 local replication = shared.require("ReplicationInterface");
 
+local solve = debug.getupvalue(physics.trajectory, 1);
+
 -- functions
 local function worldToScreen(position)
     local screen = worldtoscreen and
@@ -57,9 +59,20 @@ local function getClosest()
     return _position, _entry;
 end
 
-local function trajectory(origin, target, velocity, gravity, speed)
-    local _, t = physics.trajectory(origin, gravity, target, speed);
-    return physics.trajectory(origin, gravity, target + velocity * t, speed);
+local function trajectory(dir, velocity, accel, speed)
+    local roots = {solve(
+        accel:Dot(accel) * 0.25,
+        -accel:Dot(velocity),
+        accel:Dot(dir) + velocity:Dot(velocity) - speed*speed,
+        velocity:Dot(dir) * 2,
+        dir:Dot(dir)
+    )};
+
+    for _, t in next, roots do
+        if t and t > 0 then
+            return 0.5*accel*t + dir/t + velocity, t;
+        end
+    end
 end
 
 -- hooks
@@ -71,8 +84,7 @@ old = hookfunction(particle.new, function(args)
             local index = table.find(debug.getstack(2), args.velocity);
 
             args.velocity = trajectory(
-                args.position,
-                position,
+                position - args.position,
                 entry._velspring.p,
                 args.acceleration,
                 args.velocity.Magnitude);
