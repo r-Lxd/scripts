@@ -69,9 +69,10 @@ local function trajectory(dir, velocity, accel, speed)
         dir:Dot(dir)
     )};
 
-    for _, t in next, roots do
-        if t and t > 0 then
-            return 0.5*accel*t + dir/t + velocity, t;
+    for i = 1, #roots do
+        local root = roots[i];
+        if root and root > 0 then
+            return 0.5*accel*root + dir/root + velocity, root;
         end
     end
 end
