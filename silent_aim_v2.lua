@@ -15,19 +15,12 @@ local replication = shared.require("ReplicationInterface");
 local solve = debug.getupvalue(physics.trajectory, 1);
 
 -- functions
-local function worldToScreen(position)
-    local screen = worldtoscreen and
-        worldtoscreen({ position })[1] or
-        camera:WorldToViewportPoint(position);
-    return Vector2.new(screen.X, screen.Y), screen.Z > 0, screen.Z;
-end
-
 local function isVisible(position, ignore)
     return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
 end
 
-local function getClosest(ignore)
-    local _magnitude = fov or math.huge;
+local function getClosest(dir, ignore)
+    local _product = 1 - (fov or 180) / 90;
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
@@ -39,10 +32,9 @@ local function getClosest(ignore)
                 character[targetedPart or "Head"];
 
             if not (visibleCheck and not isVisible(part.Position, ignore)) then
-                local screen, inBounds = worldToScreen(part.Position);
-                local magnitude = (screen - camera.ViewportSize * 0.5).Magnitude;
-                if magnitude < _magnitude and inBounds then
-                    _magnitude = magnitude;
+                local product = dir:Dot((part.Position - camera.CFrame.p).Unit);
+                if product > _product then
+                    _product = product;
                     _position = part.Position;
                     _entry = entry;
                 end
@@ -74,7 +66,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest(args.physicsignore);
+        local position, entry = getClosest(args.velocity.Unit, args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
