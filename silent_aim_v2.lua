@@ -19,6 +19,7 @@ local function isVisible(position, ignore)
     return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
 end
 
+-- credits to wyvern -_-
 local function getClosest(dir, ignore)
     local _product = 1 - (fov or 180) / 90;
     local _position, _entry;
