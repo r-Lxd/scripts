@@ -66,7 +66,8 @@ local function trajectory(dir, velocity, accel, speed)
         -accel:Dot(velocity),
         accel:Dot(dir) + velocity:Dot(velocity) - speed*speed,
         velocity:Dot(dir) * 2,
-        dir:Dot(dir))};
+        dir:Dot(dir)
+    )};
 
     for _, t in next, roots do
         if t and t > 0 then
