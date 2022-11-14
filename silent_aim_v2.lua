@@ -2,6 +2,8 @@
 -- by mickey#3373, updated 11/14/22
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
+-- credits: integer, wyvern
+
 -- variables
 local players = game:GetService("Players");
 local localplayer = players.LocalPlayer;
@@ -20,7 +22,7 @@ local function isVisible(position, ignore)
 end
 
 local function getClosest(dir, ignore)
-    local _product = 1 - (fov or 180) / 90; -- credits to wyvern -_-
+    local _product = 1 - (fov or 180) / 90;
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
@@ -45,7 +47,6 @@ local function getClosest(dir, ignore)
     return _position, _entry;
 end
 
--- credits to integer for the solve parameters, i'm terrible at math.
 local function trajectory(dir, velocity, accel, speed)
     local roots = {solve(
         accel:Dot(accel) * 0.25,
