@@ -1,8 +1,7 @@
 -- phantom forces silent aim
 -- by mickey#3373, updated 11/14/22
--- https://v3rmillion.net/showthread.php?tid=1193218
-
 -- credits: integer, wyvern
+-- https://v3rmillion.net/showthread.php?tid=1193218
 
 -- variables
 local players = game:GetService("Players");
