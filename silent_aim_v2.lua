@@ -87,7 +87,7 @@ old = hookfunction(particle.new, function(args)
             args.velocity = trajectory(
                 position - args.visualorigin,
                 entry._velspring.p,
-                args.acceleration,
+                -args.acceleration,
                 args.velocity.Magnitude);
 
             debug.setstack(2, index, args.velocity);
