@@ -32,8 +32,8 @@ local function getClosest(dir, ignore)
                 character[targetedPart or "Head"];
 
             if not (visibleCheck and not isVisible(part.Position, ignore)) then
-                local product = dir.Unit:Dot((part.Position - camera.CFrame.p).Unit);
-                local angle = math.deg(math.acos(product));
+                local dotProduct = dir.Unit:Dot((part.Position - camera.CFrame.p).Unit);
+                local angle = math.deg(math.acos(dotProduct));
                 if angle < _angle then
                     _angle = angle;
                     _position = part.Position;
