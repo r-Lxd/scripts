@@ -56,7 +56,7 @@ local function trajectory(dir, velocity, accel, speed)
     )};
 
     for _, root in next, roots do
-        if root > 0 then
+        if root and root > 0 then
             return 0.5*accel*root + dir/root + velocity, root;
         end
     end
