@@ -55,10 +55,10 @@ local function trajectory(dir, velocity, accel, speed)
         dir:Dot(dir)
     );
 
-    local root = (t1>0 and t1) or (t2>0 and t2) or (t3>0 and t3) or t4;
-    local intercept = dir + velocity*root + 0.5*accel*root^2;
-    local bullet = 1/root * intercept;
-    return bullet, root;
+    local solution = (t1>0 and t1) or (t2>0 and t2) or (t3>0 and t3) or t4;
+    local intercept = dir + velocity*solution + 0.5*accel*solution^2;
+    local bullet = 1/solution * intercept;
+    return bullet, solution;
 end
 
 -- hooks
