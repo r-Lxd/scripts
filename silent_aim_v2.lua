@@ -52,8 +52,7 @@ local function trajectory(dir, velocity, accel, speed)
         accel:Dot(velocity),
         accel:Dot(dir) + velocity:Dot(velocity) - speed^2,
         dir:Dot(velocity) * 2,
-        dir:Dot(dir)
-    );
+        dir:Dot(dir));
 
     local solution = (t1>0 and t1) or (t2>0 and t2) or (t3>0 and t3) or t4;
     local intercept = dir + velocity*solution + 0.5*accel*solution^2;
