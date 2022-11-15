@@ -33,7 +33,7 @@ local function getClosest(dir, ignore)
                 character[targetedPart or "Head"];
 
             if not (visibleCheck and not isVisible(part.Position, ignore)) then
-                local product = dir:Dot((part.Position - camera.CFrame.p).Unit);
+                local product = dir.Unit:Dot((part.Position - camera.CFrame.p).Unit);
                 if product > _product then
                     _product = product;
                     _position = part.Position;
@@ -66,7 +66,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest(args.velocity.Unit, args.physicsignore);
+        local position, entry = getClosest(args.velocity, args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
