@@ -1,5 +1,5 @@
 -- phantom forces silent aim
--- by mickey#3373, credits to eev#1993
+-- by mickey#3373, updated 11/15/2022
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
 -- variables
@@ -47,19 +47,18 @@ local function getClosest(dir, ignore)
 end
 
 local function trajectory(dir, velocity, accel, speed)
-    local roots = {solve(
+    local t1, t2, t3, t4 = solve(
         accel:Dot(accel) * 0.25,
-        -accel:Dot(velocity),
-        accel:Dot(dir) + velocity:Dot(velocity) - speed*speed,
-        velocity:Dot(dir) * 2,
+        accel:Dot(velocity),
+        accel:Dot(dir) + velocity:Dot(velocity) - speed^2,
+        dir:Dot(velocity) * 2,
         dir:Dot(dir)
-    )};
+    );
 
-    for _, root in next, roots do
-        if root and root > 0 then
-            return 0.5*accel*root + dir/root + velocity, root;
-        end
-    end
+    local root = (t1>0 and t1) or (t2>0 and t2) or (t3>0 and t3) or t4;
+    local intercept = dir + velocity*root + 0.5*accel*root^2;
+    local bullet = 1/root * intercept;
+    return bullet, root;
 end
 
 -- hooks
