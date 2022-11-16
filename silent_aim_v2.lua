@@ -12,7 +12,7 @@ local shared = getrenv().shared;
 local physics = shared.require("physics");
 local particle = shared.require("particle");
 local replication = shared.require("ReplicationInterface");
-local solve = debug.getupvalue(physics.trajectory, 1);
+local solve = debug.getupvalue(physics.timehit, 2);
 
 -- functions
 local function isVisible(position, ignore)
