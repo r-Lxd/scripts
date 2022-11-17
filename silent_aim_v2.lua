@@ -1,5 +1,5 @@
 -- phantom forces silent aim
--- by mickey#3373, updated 11/15/2022
+-- by mickey#3373, working 11/17/2022
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
 -- variables
