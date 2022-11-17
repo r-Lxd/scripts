@@ -19,7 +19,7 @@ local function isVisible(position, ignore)
     return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
 end
 
-local function getClosest(ignore)
+local function getClosest(dir, origin, ignore)
     local _angle = fov or math.huge;
     local _position, _entry;
 
@@ -30,10 +30,8 @@ local function getClosest(ignore)
             local part = targetedPart == "Random" and
                 character[math.random() > 0.5 and "Head" or "Torso"] or
                 character[targetedPart or "Head"];
-
             if not (visibleCheck and not isVisible(part.Position, ignore)) then
-                local cframe = camera.CFrame;
-                local dotProduct = cframe.LookVector:Dot((part.Position - cframe.p).Unit);
+                local dotProduct = dir:Dot((part.Position - origin).Unit);
                 local angle = math.deg(math.acos(dotProduct));
                 if angle < _angle then
                     _angle = angle;
@@ -54,7 +52,6 @@ local function trajectory(dir, velocity, accel, speed)
         accel:Dot(dir) + velocity:Dot(velocity) - speed^2,
         dir:Dot(velocity) * 2,
         dir:Dot(dir));
-
     local time = (t1>0 and t1) or (t2>0 and t2) or (t3>0 and t3) or t4;
     local bullet = (dir + velocity*time + 0.5*accel*time^2) / time;
     return bullet, time;
@@ -64,7 +61,10 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest(args.physicsignore);
+        local position, entry = getClosest(
+            args.velocity.Unit,
+            args.visualorigin,
+            args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
@@ -73,7 +73,6 @@ old = hookfunction(particle.new, function(args)
                 entry._velspring.p,
                 -args.acceleration,
                 args.velocity.Magnitude);
-
             debug.setstack(2, index, args.velocity);
         end
     end
