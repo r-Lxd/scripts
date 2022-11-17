@@ -32,8 +32,8 @@ local function getClosest(dir, origin, ignore)
                 character[targetedPart or "Head"];
 
             if not (visibleCheck and not isVisible(part.Position, ignore)) then
-                local dotProduct = dir:Dot((part.Position - origin).Unit);
-                local angle = math.deg(math.acos(dotProduct));
+                local product = dir.Unit:Dot((part.Position - origin).Unit);
+                local angle = math.deg(math.acos(product));
                 if angle < _angle then
                     _angle = angle;
                     _position = part.Position;
@@ -63,11 +63,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest(
-            args.velocity.Unit,
-            args.visualorigin,
-            args.physicsignore);
-
+        local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
