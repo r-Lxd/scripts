@@ -20,7 +20,7 @@ local function isVisible(position, ignore)
 end
 
 local function getClosest(dir, origin, ignore)
-    local _angle = fov or math.huge;
+    local _angle = fov or 180;
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
