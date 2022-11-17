@@ -19,7 +19,7 @@ local function isVisible(position, ignore)
     return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
 end
 
-local function getClosest(dir, ignore)
+local function getClosest(ignore)
     local _angle = fov or math.huge;
     local _position, _entry;
 
@@ -32,7 +32,8 @@ local function getClosest(dir, ignore)
                 character[targetedPart or "Head"];
 
             if not (visibleCheck and not isVisible(part.Position, ignore)) then
-                local dotProduct = dir.Unit:Dot((part.Position - camera.CFrame.p).Unit);
+                local cframe = camera.CFrame;
+                local dotProduct = cframe.LookVector:Dot((part.Position - cframe.p).Unit);
                 local angle = math.deg(math.acos(dotProduct));
                 if angle < _angle then
                     _angle = angle;
@@ -63,7 +64,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if args.onplayerhit and debug.getinfo(2).name == "fireRound" then
-        local position, entry = getClosest(args.velocity, args.physicsignore);
+        local position, entry = getClosest(args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
