@@ -27,9 +27,9 @@ local function getClosest(dir, origin, ignore)
         local tpObject = entry and entry._thirdPersonObject;
         local character = tpObject and tpObject._character;
         if character and player.Team ~= localplayer.Team then
-            local position = targetedPart == "Random" and
-                character[math.random() > 0.5 and "Head" or "Torso"].Position or
-                character[targetedPart or "Head"].Position;
+            local position = character[targetedPart == "Random" and
+                (math.random() > 0.5 and "Head" or "Torso") or
+                (targetedPart or "Head")].Position;
 
             if not (visibleCheck and not isVisible(position, ignore)) then
                 local product = dir:Dot((position - origin).Unit);
