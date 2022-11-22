@@ -62,7 +62,7 @@ end
 -- hooks
 local old;
 old = hookfunction(particle.new, function(args)
-    if debug.getinfo(2).name == "fireRound" then
+    if debug.info(2, "n") == "fireRound" then
         local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
