@@ -20,23 +20,23 @@ local function isVisible(position, ignore)
 end
 
 local function getClosest(dir, origin, ignore)
-    local _angle = fov or 180;
+    local _angle = math.rad(fov or 180);
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
         local tpObject = entry and entry._thirdPersonObject;
         local character = tpObject and tpObject._character;
         if character and player.Team ~= localplayer.Team then
-            local part = targetedPart == "Random" and
-                character[math.random() > 0.5 and "Head" or "Torso"] or
-                character[targetedPart or "Head"];
+            local position = targetedPart == "Random" and
+                character[math.random() > 0.5 and "Head" or "Torso"].Position or
+                character[targetedPart or "Head"].Position;
 
-            if not (visibleCheck and not isVisible(part.Position, ignore)) then
-                local product = dir.Unit:Dot((part.Position - origin).Unit);
-                local angle = math.deg(math.acos(product));
+            if not (visibleCheck and not isVisible(position, ignore)) then
+                local product = dir:Dot((position - origin).Unit);
+                local angle = math.acos(product);
                 if angle < _angle then
                     _angle = angle;
-                    _position = part.Position;
+                    _position = position;
                     _entry = entry;
                 end
             end
@@ -63,7 +63,7 @@ end
 local old;
 old = hookfunction(particle.new, function(args)
     if debug.info(2, "n") == "fireRound" then
-        local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
+        local position, entry = getClosest(args.velocity.Unit, args.visualorigin, args.physicsignore);
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
