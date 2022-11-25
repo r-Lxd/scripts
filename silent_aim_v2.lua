@@ -55,7 +55,7 @@ local function trajectory(dir, velocity, accel, speed)
         dir:Dot(dir));
 
     local time = (t4>0 and t4) or (t3>0 and t3) or (t2>0 and t2) or t1;
-    local bullet = 0.5*accel*time + dir/time + velocity;
+    local bullet = (dir + velocity*time + 0.5*accel*time^2) / time;
     return bullet, time;
 end
 
