@@ -33,7 +33,7 @@ local function getClosest(dir, origin, ignore)
 
             if not (visibleCheck and not isVisible(position, ignore)) then
                 local dot = dir.Unit:Dot((position - origin).Unit);
-                local angle = -(dot - 1) * 0.5 * 180;
+                local angle = -(dot - 1) * 90;
                 if angle < _angle then
                     _angle = angle;
                     _position = position;
