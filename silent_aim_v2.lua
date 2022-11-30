@@ -20,7 +20,7 @@ local function isVisible(position, ignore)
 end
 
 local function getClosest(dir, origin, ignore)
-    local _closest = 1 - (fov or 180) / 90;
+    local _closest = 1 - (fov or 180)/90;
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
