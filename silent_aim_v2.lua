@@ -14,6 +14,10 @@ local particle = shared.require("particle");
 local replication = shared.require("ReplicationInterface");
 local solve = debug.getupvalue(physics.timehit, 2);
 
+-- locals
+local getstack = debug.getstack;
+local setstack = debug.setstack;
+
 -- functions
 local function isVisible(position, ignore)
     return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
@@ -65,7 +69,7 @@ old = hookfunction(particle.new, function(args)
     if debug.info(2, "n") == "fireRound" then
         local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
         if position and entry then
-            local index = table.find(debug.getstack(2), args.velocity);
+            local index = table.find(getstack(2), args.velocity);
 
             args.velocity = trajectory(
                 position - args.visualorigin,
@@ -73,7 +77,7 @@ old = hookfunction(particle.new, function(args)
                 -args.acceleration,
                 args.velocity.Magnitude);
 
-            debug.setstack(2, index, args.velocity);
+            setstack(2, index, args.velocity);
         end
     end
     return old(args);
