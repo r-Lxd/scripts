@@ -20,7 +20,7 @@ local function isVisible(position, ignore)
 end
 
 local function getClosest(dir, origin, ignore)
-    local _closest = 1 - (fov or 180)/90;
+    local _angle = fov or 180;
     local _position, _entry;
 
     replication.operateOnAllEntries(function(player, entry)
@@ -33,8 +33,9 @@ local function getClosest(dir, origin, ignore)
 
             if not (visibleCheck and not isVisible(position, ignore)) then
                 local dot = dir.Unit:Dot((position - origin).Unit);
-                if dot > _closest then
-                    _closest = dot;
+                local angle = -(dot - 1) * 0.5 * 180;
+                if angle < _angle then
+                    _angle = angle;
                     _position = position;
                     _entry = entry;
                 end
