@@ -14,10 +14,6 @@ local particle = shared.require("particle");
 local replication = shared.require("ReplicationInterface");
 local solve = debug.getupvalue(physics.timehit, 2);
 
--- locals
-local getstack = debug.getstack;
-local setstack = debug.setstack;
-
 -- functions
 local function isVisible(position, ignore)
     return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
