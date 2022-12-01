@@ -65,7 +65,7 @@ old = hookfunction(particle.new, function(args)
     if debug.info(2, "n") == "fireRound" then
         local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
         if position and entry then
-            local index = table.find(getstack(2), args.velocity);
+            local index = table.find(debug.getstack(2), args.velocity);
 
             args.velocity = trajectory(
                 position - args.visualorigin,
@@ -73,7 +73,7 @@ old = hookfunction(particle.new, function(args)
                 -args.acceleration,
                 args.velocity.Magnitude);
 
-            setstack(2, index, args.velocity);
+            debug.setstack(2, index, args.velocity);
         end
     end
     return old(args);
