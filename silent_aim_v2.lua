@@ -4,14 +4,14 @@
 
 -- variables
 local players = game:GetService("Players");
+local replicated = game:GetService("ReplicatedFirst");
 local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
-local shared = getrenv().shared;
 
 -- modules
-local physics = shared.require("physics");
-local particle = shared.require("particle");
-local replication = shared.require("ReplicationInterface");
+local physics = require(replicated.SharedModules.Old.Utilities.Math.physics);
+local particle = require(replicated.ClientModules.Old.framework.particle);
+local replication = require(replicated.ClientModules.Rewrite.Replication.ReplicationInterface);
 local solve = debug.getupvalue(physics.timehit, 2);
 
 -- functions
