@@ -9,10 +9,17 @@ local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 
 -- modules
-local physics = require(replicated.SharedModules.Old.Utilities.Math.physics);
-local particle = require(replicated.ClientModules.Old.framework.particle);
-local replication = require(replicated.ClientModules.Rewrite.Replication.ReplicationInterface);
-local solve = debug.getupvalue(physics.timehit, 2);
+local physics, solve, particle, replication;
+for _, module in next, getloadedmodules() do
+    if module.Name == "particle" then
+        particle = require(module);
+    elseif module.Name == "ReplicationInterface" then
+        replication = require(module);
+    elseif module.Name == "physics" then
+        physics = require(module);
+        solve = debug.getupvalue(physics.timehit, 2);
+    end
+end
 
 -- functions
 local function isVisible(position, ignore)
