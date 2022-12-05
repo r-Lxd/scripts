@@ -9,7 +9,10 @@ local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 
 -- modules
-local physics, solve, particle, replication;
+local particle;
+local replication;
+local physics, solve;
+
 for _, module in next, getloadedmodules() do
     if module.Name == "particle" then
         particle = require(module);
