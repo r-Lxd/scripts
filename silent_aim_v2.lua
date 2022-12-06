@@ -12,7 +12,7 @@ local camera = workspace.CurrentCamera;
 local particle, replication, solve;
 for _, v in next, getgc(true) do
     if type(v) == "table" then
-        if rawget(v, "new") and table.isfrozen(v) then
+        if rawget(v, "new") and rawget(v, "step") and rawget(v, "reset") then
             particle = v;
         elseif rawget(v, "getPlayerFromBodyPart") then
             replication = v;
