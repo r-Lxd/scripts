@@ -9,10 +9,7 @@ local localplayer = players.LocalPlayer;
 local camera = workspace.CurrentCamera;
 
 -- modules
-local particle;
-local replication;
-local physics, solve;
-
+local particle, replication, solve;
 for _, v in next, getgc(true) do
     if type(v) == "table" then
         if rawget(v, "new") and table.isfrozen(v) then
@@ -20,7 +17,6 @@ for _, v in next, getgc(true) do
         elseif rawget(v, "getPlayerFromBodyPart") then
             replication = v;
         elseif rawget(v, "timehit") then
-            physics = v;
             solve = debug.getupvalue(v.timehit, 2);
         end
     end
