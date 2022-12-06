@@ -13,14 +13,16 @@ local particle;
 local replication;
 local physics, solve;
 
-for _, module in next, getloadedmodules() do
-    if module.Name == "particle" then
-        particle = require(module);
-    elseif module.Name == "ReplicationInterface" then
-        replication = require(module);
-    elseif module.Name == "physics" then
-        physics = require(module);
-        solve = debug.getupvalue(physics.timehit, 2);
+for _, v in next, getgc(true) do
+    if type(v) == "table" then
+        if rawget(v, "new") and table.isfrozen(v) then
+            particle = v;
+        elseif rawget(v, "getPlayerFromBodyPart") then
+            replication = v;
+        elseif rawget(v, "timehit") then
+            physics = v;
+            solve = debug.getupvalue(v.timehit, 2);
+        end
     end
 end
 
