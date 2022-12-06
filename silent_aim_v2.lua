@@ -13,7 +13,7 @@ local particle, replication, solve;
 for _, v in next, getgc(true) do
     if particle and replication and solve then
         break;
-    elseif type(v) == "table" then
+    elseif type(v) == "table" and #v > 0 then
         if rawget(v, "new") and rawget(v, "step") and rawget(v, "reset") then
             particle = v;
         elseif rawget(v, "getPlayerFromBodyPart") then
