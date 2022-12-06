@@ -11,7 +11,9 @@ local camera = workspace.CurrentCamera;
 -- modules
 local particle, replication, solve;
 for _, v in next, getgc(true) do
-    if type(v) == "table" then
+    if particle and replication and solve then
+        break;
+    elseif type(v) == "table" then
         if rawget(v, "new") and rawget(v, "step") and rawget(v, "reset") then
             particle = v;
         elseif rawget(v, "getPlayerFromBodyPart") then
