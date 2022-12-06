@@ -57,14 +57,14 @@ local function getClosest(dir, origin, ignore)
 end
 
 local function trajectory(dir, velocity, accel, speed)
-    local t1, t2, t3, t4 = solve(
+    local r1, r2, r3, r4 = solve(
         accel:Dot(accel) * 0.25,
         accel:Dot(velocity),
         accel:Dot(dir) + velocity:Dot(velocity) - speed^2,
         dir:Dot(velocity) * 2,
         dir:Dot(dir));
 
-    local time = (t1>0 and t1) or (t2>0 and t2) or (t3>0 and t3) or t4;
+    local time = (r1>0 and r1) or (r2>0 and r2) or (r3>0 and r3) or r4;
     local bullet = 0.5*accel*time + dir/time + velocity;
     return bullet, time;
 end
