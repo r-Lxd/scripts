@@ -9,10 +9,20 @@ local camera = workspace.CurrentCamera;
 local shared = getrenv().shared;
 
 -- modules
-local physics = shared.require("physics");
-local particle = shared.require("particle");
-local replication = shared.require("ReplicationInterface");
-local solve = debug.getupvalue(physics.timehit, 2);
+local particle, replication, solve;
+for _, v in next, getgc(true) do
+    if particle and replication and solve then
+        break;
+    elseif type(v) == "table" then
+        if rawget(v, "new") and rawget(v, "step") and rawget(v, "reset") then
+            particle = v;
+        elseif rawget(v, "getPlayerFromBodyPart") then
+            replication = v;
+        elseif rawget(v, "timehit") then
+            solve = debug.getupvalue(v.timehit, 2);
+        end
+    end
+end
 
 -- functions
 local function isVisible(position, ignore)
