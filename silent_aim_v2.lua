@@ -2,6 +2,8 @@
 -- by mickey#3373, working 11/25/2022
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
+randomization = true
+
 -- variables
 local players = game:GetService("Players");
 local localplayer = players.LocalPlayer;
@@ -37,9 +39,12 @@ local function getClosest(dir, origin, ignore)
         local tpObject = entry and entry._thirdPersonObject;
         local character = tpObject and tpObject._character;
         if character and player.Team ~= localplayer.Team then
-            local position = character[targetedPart == "Random" and
+            local part = character[targetedPart == "Random" and
                 (math.random() < (headChance or 0.5) and "Head" or "Torso") or
-                (targetedPart or "Head")].Position;
+                (targetedPart or "Head")];
+
+            local position = part.Position +
+                (randomization and part.Size * 0.4 * math.random() or Vector3.zero);
 
             if not (visibleCheck and not isVisible(position, ignore)) then
                 local dot = dir.Unit:Dot((position - origin).Unit);
