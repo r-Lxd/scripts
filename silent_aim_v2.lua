@@ -2,8 +2,6 @@
 -- by mickey#3373, working 11/25/2022
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
-randomization = true
-
 -- variables
 local players = game:GetService("Players");
 local localplayer = players.LocalPlayer;
