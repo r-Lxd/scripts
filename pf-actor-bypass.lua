@@ -6,7 +6,7 @@ if game.PlaceId == 292439477 then
     -- connect parallel bypass
     local old; 
     old = hookmetamethod(runService.Heartbeat, "__index", function(_, index)
-        return old(_, index == "ConnectParallel" and "Connect" or index);
+        return old(_, (index == "ConnectParallel" and not checkcaller()) and "Connect" or index);
     end);
     -- actor bypass
     replicatedFirst.ChildAdded:Connect(function(instance)
