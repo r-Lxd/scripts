@@ -2,7 +2,8 @@
 local runService = game:GetService("RunService");
 local replicatedFirst = game:GetService("ReplicatedFirst");
 
-if game.PlaceId == 292439477 then
+local placeId = game.PlaceId;
+if placeId == 292439477 or placeId == 299659045 then
     -- connect parallel bypass
     local old; 
     old = hookmetamethod(runService.Heartbeat, "__index", function(_, index)
