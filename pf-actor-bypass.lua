@@ -1,7 +1,7 @@
 -- variables
 local runService = game:GetService("RunService");
 local replicatedFirst = game:GetService("ReplicatedFirst");
--- place id check
+
 if game.PlaceId == 292439477 then
     -- connect parallel bypass
     local old; 
