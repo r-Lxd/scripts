@@ -23,20 +23,20 @@ if placeId == 292439477 or placeId == 299659045 then
 
     -- connect parallel bypass
     local old; 
-    old = hookmetamethod(runService.Heartbeat, "__index", function(self, index)
+    old = hookmetamethod(runService.Heartbeat, "__index", function(_, index)
         if index == "ConnectParallel" and not checkcaller() then
             index = "Connect";
         end
-        return old(self, index);
+        return old(_, index);
     end);
 
     -- module-destroy bypass
     setmetatable(getrenv().shared, {
-        __newindex = function(self, index, value)
-            if index == "close" then
+        __newindex = function(_, index, value)
+            if index == "close" and not checkcaller() then
                 value = function() end;
             end
-            return rawset(self, index, value);
+            return rawset(_, index, value);
         end
     });
 end
