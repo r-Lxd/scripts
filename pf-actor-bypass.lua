@@ -35,7 +35,7 @@ old = hookmetamethod(runService.Heartbeat, "__index", function(_, index)
 end);
 
 -- module destroy bypass
-setmetatable(getrenv().shared, {
+debug.setmetatable(getrenv().shared, {
     __newindex = function(_, index, value)
         if index == "close" and not checkcaller() then
             value = function() end;
