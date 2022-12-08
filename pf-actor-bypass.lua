@@ -1,12 +1,14 @@
+-- variables
 local runService = game:GetService("RunService");
 local replicatedFirst = game:GetService("ReplicatedFirst");
 
 if game.PlaceId == 292439477 then
+    -- connect parallel bypass
     local old; 
     old = hookmetamethod(runService.Heartbeat, "__index", function(_, index)
         return old(_, index == "ConnectParallel" and "Connect" or index);
     end);
-        
+    -- actor bypass
     replicatedFirst.ChildAdded:Connect(function(instance)
        if instance:IsA("Actor") then
            replicatedFirst.ChildAdded:Wait();
@@ -22,5 +24,4 @@ if game.PlaceId == 292439477 then
            instance.Parent = nil;
        end
     end);
-    
 end
