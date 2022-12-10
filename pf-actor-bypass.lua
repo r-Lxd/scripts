@@ -22,14 +22,15 @@ end);
 -- connect parallel bypass
 local old;
 old = hookmetamethod(runService.Stepped, "__index", function(self, index)
+    local indexed = old(self, index);
     if index == "ConnectParallel" and not checkcaller() then
-        return function(signal, callback)
+        hookfunction(indexed, newcclosure(function(signal, callback)
             return old(self, "Connect")(signal, function()
                 return self:Wait() and callback();
             end);
-        end
+        end));
     end
-    return old(self, index);
+    return indexed;
 end);
 
 -- module destroy bypass
