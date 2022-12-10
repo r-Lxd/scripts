@@ -13,34 +13,30 @@ replicatedFirst.ChildAdded:Connect(function(instance)
     if instance:IsA("Actor") then
         replicatedFirst.ChildAdded:Wait();
 
-        local container = Instance.new("Folder");
-        container.Name = instance.Name;
-        container.Parent = instance.Parent;
-
         for _, child in next, instance:GetChildren() do
-            child.Parent = container;
+            child.Parent = replicatedFirst;
         end
-
-        instance.Parent = nil;
     end
 end);
 
 -- connect parallel bypass
 local old;
 old = hookmetamethod(runService.Stepped, "__index", function(self, index)
-    local indexed = old(self, index);
     if index == "ConnectParallel" and not checkcaller() then
-        hookfunction(indexed, self.Connect);
+        return function(signal, callback)
+            return old(self, "Connect")(signal, function()
+                return self:Wait() and callback();
+            end);
+        end
     end
-    return indexed;
+    return old(self, index);
 end);
 
 -- module destroy bypass
-debug.setmetatable(getrenv().shared, {
-    __newindex = function(_, index, value)
-        if index == "close" and not checkcaller() then
-            value = function() end;
-        end
-        return rawset(_, index, value);
-    end
-});
+task.spawn(function()
+    local shared = getrenv().shared;
+
+    repeat task.wait() until shared.close;
+
+    hookfunction(shared.close, function() end);
+end);
