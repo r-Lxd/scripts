@@ -11,11 +11,13 @@ local replicatedFirst = game:GetService("ReplicatedFirst");
 -- actor bypass
 replicatedFirst.ChildAdded:Connect(function(instance)
     if instance:IsA("Actor") then
-        replicatedFirst.ChildAdded:Wait();
+        repeat
+            instance.ChildAdded:Wait();
 
-        for _, child in next, instance:GetChildren() do
-            child.Parent = replicatedFirst;
-        end
+            for _, child in next, instance:GetChildren() do
+                child.Parent = replicatedFirst;
+            end
+        until #instance:GetChildren() < 1;
     end
 end);
 
