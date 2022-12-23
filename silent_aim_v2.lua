@@ -9,9 +9,7 @@ local camera = game:GetService("Workspace").CurrentCamera;
 -- modules
 local particleNew, operateOnAllEntries, solve;
 for _, object in next, getgc(true) do
-    if particle and replication and solve then
-        break;
-    elseif type(object) == "function" then
+    if type(object) == "function" then
         local source, name = debug.info(object, "sn");
         if name == "new" and source == "particle" then
             particleNew = object;
@@ -19,6 +17,10 @@ for _, object in next, getgc(true) do
             operateOnAllEntries = object;
         elseif name == "solve" and source == "physics" then
             solve = object;
+        end
+        
+        if particle and replication and solve then
+            break;
         end
     end
 end
