@@ -4,6 +4,7 @@
 
 -- variables
 local localplayer = game:GetService("Players").LocalPlayer;
+local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
 local particle, replication, solve;
@@ -23,7 +24,7 @@ end
 
 -- functions
 local function isVisible(position, ignore)
-    return #workspace.CurrentCamera:GetPartsObscuringTarget({ position }, ignore) == 0;
+    return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
 end
 
 local function getClosest(dir, origin, ignore)
