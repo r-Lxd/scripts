@@ -3,7 +3,7 @@
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
 -- variables
-local client = game:GetService("Players").LocalPlayer;
+local localPlayer = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
@@ -37,7 +37,7 @@ local function getClosest(dir, origin, ignore)
     operateOnAllEntries(function(player, entry)
         local tpObject = entry and entry._thirdPersonObject;
         local character = tpObject and tpObject._character;
-        if character and player.Team ~= client.Team then
+        if character and player.Team ~= localPlayer.Team then
             local part = character[targetedPart == "Random" and
                 (math.random() < (headChance or 0.5) and "Head" or "Torso") or
                 (targetedPart or "Head")];
