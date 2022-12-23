@@ -7,17 +7,18 @@ local client = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
-local particle, replication, solve;
+local particleNew, operateOnAllEntries, solve;
 for _, v in next, getgc(true) do
     if particle and replication and solve then
         break;
-    elseif type(v) == "table" then
-        if rawget(v, "new") and rawget(v, "step") and rawget(v, "reset") then
-            particle = v;
-        elseif rawget(v, "getPlayerFromBodyPart") then
-            replication = v;
-        elseif rawget(v, "timehit") then
-            solve = debug.getupvalue(v.timehit, 2);
+    elseif type(v) == "function" then
+        local source, name = debug.info(v, "sn");
+        if name == "new" and source == "particle" then
+            particleNew = v;
+        elseif name == "operateOnAllEntries" and source == "ReplicationInterface" then
+            operateOnAllEntries = v;
+        elseif name == "solve" and source == "physics" then
+            solve = solve;
         end
     end
 end
@@ -31,7 +32,7 @@ local function getClosest(dir, origin, ignore)
     local _angle = fov or 180;
     local _position, _entry;
 
-    replication.operateOnAllEntries(function(player, entry)
+    operateOnAllEntries(function(player, entry)
         local tpObject = entry and entry._thirdPersonObject;
         local character = tpObject and tpObject._character;
         if character and player.Team ~= client.Team then
@@ -72,7 +73,7 @@ end
 
 -- hooks
 local old;
-old = hookfunction(particle.new, function(args)
+old = hookfunction(particleNew, function(args)
     if debug.info(2, "n") == "fireRound" then
         local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
         if position and entry then
