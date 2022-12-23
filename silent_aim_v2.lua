@@ -5,7 +5,6 @@
 -- variables
 local players = game:GetService("Players");
 local localplayer = players.LocalPlayer;
-local camera = workspace.CurrentCamera;
 local shared = getrenv().shared;
 
 -- modules
@@ -26,7 +25,7 @@ end
 
 -- functions
 local function isVisible(position, ignore)
-    return #camera:GetPartsObscuringTarget({ position }, ignore) == 0;
+    return #workspace.CurrentCamera:GetPartsObscuringTarget({ position }, ignore) == 0;
 end
 
 local function getClosest(dir, origin, ignore)
