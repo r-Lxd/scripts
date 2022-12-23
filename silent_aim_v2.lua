@@ -7,21 +7,21 @@ local localPlayer = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
-local newParticle, operateOnAllEntries, solve;
-for _, object in next, getgc(true) do
-    if type(object) == "function" then
-        local source, name = debug.info(object, "sn");
-        if name == "new" and source == "particle" then
-            newParticle = object;
-        elseif name == "operateOnAllEntries" and source == "ReplicationInterface" then
-            operateOnAllEntries = object;
-        elseif name == "solve" and source == "physics" then
-            solve = object;
-        end
-        
-        if particle and replication and solve then
-            break;
-        end
+local new, operateOnAllEntries, solve;
+for _, object in next, getgc(false) do
+    local name = debug.info(object, "n");
+    local source = tostring(getfenv(object).script);
+
+    if name == "new" and source == "particle" then
+        new = object;
+    elseif name == "operateOnAllEntries" and source == "ReplicationInterface" then
+        operateOnAllEntries = object;
+    elseif name == "solve" and source == "physics" then
+        solve = object;
+    end
+    
+    if new and operateOnAllEntries and solve then
+        break;
     end
 end
 
@@ -75,7 +75,7 @@ end
 
 -- hooks
 local old;
-old = hookfunction(newParticle, function(args)
+old = hookfunction(new, function(args)
     if debug.info(2, "n") == "fireRound" then
         local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
         if position and entry then
