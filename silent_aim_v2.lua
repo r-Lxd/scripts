@@ -7,23 +7,29 @@ local localPlayer = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
-local new, operateOnAllEntries, solve;
+local newParticle; 
+local operateOnAllEntries; 
+local solve;
+
 for _, object in next, getgc(false) do
     local name = debug.info(object, "n");
     local source = tostring(getfenv(object).script);
 
     if name == "new" and source == "particle" then
-        new = object;
+        newParticle = object;
     elseif name == "operateOnAllEntries" and source == "ReplicationInterface" then
         operateOnAllEntries = object;
     elseif name == "solve" and source == "physics" then
         solve = object;
     end
     
-    if new and operateOnAllEntries and solve then
+    if newParticle and operateOnAllEntries and solve then
         break;
     end
 end
+
+assert(newParticle and operateOnAllEntries and solve,
+    "Failed to find module(s), are you using an anti-cheat bypass?");
 
 -- functions
 local function isVisible(position, ignore)
@@ -75,7 +81,7 @@ end
 
 -- hooks
 local old;
-old = hookfunction(new, function(args)
+old = hookfunction(newParticle, function(args)
     if debug.info(2, "n") == "fireRound" then
         local position, entry = getClosest(args.velocity, args.visualorigin, args.physicsignore);
         if position and entry then
