@@ -49,7 +49,7 @@ local function getClosest(dir, origin, ignore)
                 (targetedPart or "Head")];
 
             local position = part.Position +
-                (part.Size * 0.5 * (math.random() * 2 - 1)) * randomization;
+                (part.Size * 0.5 * (math.random() * 2 - 1)) * (randomization or 0);
 
             if not (visibleCheck and not isVisible(position, ignore)) then
                 local dot = dir.Unit:Dot((position - origin).Unit);
