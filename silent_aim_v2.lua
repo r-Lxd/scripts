@@ -3,9 +3,7 @@
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
 -- variables
-local players = game:GetService("Players");
-local localplayer = players.LocalPlayer;
-local shared = getrenv().shared;
+local localplayer = game:GetService("Players").LocalPlayer;
 
 -- modules
 local particle, replication, solve;
