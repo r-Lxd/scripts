@@ -7,7 +7,7 @@ local localPlayer = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
-local newParticle, entryLoop, solveQuartic;
+local newParticle, loopEntries, solveQuartic;
 for _, object in next, getgc(false) do
     local name = debug.info(object, "n");
     local source = tostring(getfenv(object).script);
@@ -15,17 +15,17 @@ for _, object in next, getgc(false) do
     if name == "new" and source == "particle" then
         newParticle = object;
     elseif name == "operateOnAllEntries" and source == "ReplicationInterface" then
-        entryLoop = object;
+        loopEntries = object;
     elseif name == "solve" and source == "physics" then
         solveQuartic = object;
     end
     
-    if newParticle and entryLoop and solveQuartic then
+    if newParticle and loopEntries and solveQuartic then
         break;
     end
 end
 
-assert(newParticle and entryLoop and solveQuartic, "Failed to find module(s)");
+assert(newParticle and loopEntries and solveQuartic, "Failed to find module(s)");
 
 -- functions
 local function isVisible(position, ignore)
@@ -36,7 +36,7 @@ local function getClosest(dir, origin, ignore)
     local _angle = fov or 180;
     local _position, _entry;
 
-    entryLoop(function(player, entry)
+    loopEntries(function(player, entry)
         local tpObject = entry and entry._thirdPersonObject;
         local character = tpObject and tpObject._character;
         if character and player.Team ~= localPlayer.Team then
