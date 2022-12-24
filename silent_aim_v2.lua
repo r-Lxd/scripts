@@ -8,7 +8,10 @@ local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
 local newParticle, loopEntries, solveQuartic;
-for _, object in next, getgc(false) do
+local garbageCollection = getgc(false);
+
+for i = 1, #garbageCollection do
+    local object = garbageCollection[i];
     local source, name = debug.info(object, "sn");
     local script = string.match(source, "%w+$");
 
