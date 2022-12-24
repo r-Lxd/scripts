@@ -9,14 +9,14 @@ local camera = game:GetService("Workspace").CurrentCamera;
 -- modules
 local newParticle, loopEntries, solveQuartic;
 for _, object in next, getgc(false) do
-    local path, name = debug.info(object, "sn");
-    local source = string.match(path, "%w+$");
+    local source, name = debug.info(object, "sn");
+    local script = string.match(source, "%w+$");
 
-    if name == "new" and source == "particle" then
+    if name == "new" and script == "particle" then
         newParticle = object;
-    elseif name == "operateOnAllEntries" and source == "ReplicationInterface" then
+    elseif name == "operateOnAllEntries" and script == "ReplicationInterface" then
         loopEntries = object;
-    elseif name == "solve" and source == "physics" then
+    elseif name == "solve" and script == "physics" then
         solveQuartic = object;
     end
     
