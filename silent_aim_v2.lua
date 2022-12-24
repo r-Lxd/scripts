@@ -62,7 +62,7 @@ local function getClosest(dir, origin, ignore)
     return _position, _entry;
 end
 
-local function trajectory(dir, velocity, accel, speed)
+local function getTrajectory(dir, velocity, accel, speed)
     local r1, r2, r3, r4 = solveQuartic(
         accel:Dot(accel) * 0.25,
         accel:Dot(velocity),
@@ -83,7 +83,7 @@ old = hookfunction(newParticle, function(args)
         if position and entry then
             local index = table.find(debug.getstack(2), args.velocity);
 
-            args.velocity = trajectory(
+            args.velocity = getTrajectory(
                 position - args.visualorigin,
                 entry._velspring._p0,
                 -args.acceleration,
