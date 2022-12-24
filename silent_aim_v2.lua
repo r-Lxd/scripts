@@ -7,10 +7,7 @@ local localPlayer = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
 
 -- modules
-local newParticle; 
-local operateOnAllEntries; 
-local solve;
-
+local newParticle, operateOnAllEntries, solve;
 for _, object in next, getgc(false) do
     local name = debug.info(object, "n");
     local source = tostring(getfenv(object).script);
