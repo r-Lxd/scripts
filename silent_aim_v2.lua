@@ -28,8 +28,7 @@ for _, object in next, getgc(false) do
     end
 end
 
-assert(newParticle and operateOnAllEntries and solve,
-    "Failed to find module(s), are you using an anti-cheat bypass?");
+assert(newParticle and operateOnAllEntries and solve, "Failed to find module(s)");
 
 -- functions
 local function isVisible(position, ignore)
