@@ -9,8 +9,8 @@ local camera = game:GetService("Workspace").CurrentCamera;
 -- modules
 local newParticle, loopEntries, solveQuartic;
 for _, object in next, getgc(false) do
-    local name = debug.info(object, "n");
-    local source = tostring(getfenv(object).script);
+    local path, name = debug.info(object, "sn");
+    local source = string.match(path, "%w+$");
 
     if name == "new" and source == "particle" then
         newParticle = object;
