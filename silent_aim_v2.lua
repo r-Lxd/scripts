@@ -2,6 +2,17 @@
 -- by mickey#3373, working 12/23/2022
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
+-- check for parameter sent through syn.run_on_actor. allows silent aim to be ran without a bypass in auto execute
+local param = ...
+
+if syn and typeof(syn) == 'table' and syn.run_on_actor and param ~= "Spoorloos" then
+    local framework = game:GetService("ReplicatedFirst"):FindFirstChild("Framework", true)
+    
+    if framework and framework.Parent:IsA("Actor") then
+        return syn.run_on_actor(framework.Parent, game:HttpGet("https://raw.githubusercontent.com/Spoorloos/scripts/main/silent_aim_v2.lua"), "Spoorloos")
+    end
+end
+
 -- variables
 local localPlayer = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
