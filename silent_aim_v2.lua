@@ -2,6 +2,17 @@
 -- by mickey#3373, working 12/23/2022
 -- https://v3rmillion.net/showthread.php?tid=1193218
 
+-- use syn.run_on_actor instead if no specific parameter was passed
+local ranOnActor = ...
+
+if syn and ranOnActor ~= "Spoorloos" then
+    local framework = game:GetService("ReplicatedFirst"):FindFirstChild("Framework", true)
+    
+    if framework and framework.Parent.ClassName == 'Actor' then
+        return syn.run_on_actor(framework.Parent, game:HttpGet(""), "Spoorloos")
+    end
+end
+
 -- variables
 local localPlayer = game:GetService("Players").LocalPlayer;
 local camera = game:GetService("Workspace").CurrentCamera;
